@@ -115,7 +115,6 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: background 0.2s;
         }
         .cat-header:active { opacity: 0.9; }
         .cat-header .left { display: flex; align-items: center; gap: 12px; }
@@ -139,21 +138,42 @@
         }
         .cat-details.open { max-height: 2000px; }
 
-        .cat-details .detail-item {
+        /* INCOME ROWS (editable) */
+        .income-row {
             padding: 12px 18px;
             display: flex;
             align-items: center;
             gap: 12px;
             border-bottom: 1px solid #F3F4F6;
         }
-        .cat-details .detail-item:last-child { border-bottom: none; }
-        .cat-details .detail-item .info { flex: 1; }
-        .cat-details .detail-item .info .title { font-size: 14px; font-weight: 600; }
-        .cat-details .detail-item .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
-        .cat-details .detail-item .amount.green { color: var(--green); }
-        .cat-details .detail-item .amount.orange { color: var(--orange-dark); }
-        .cat-details .detail-item .amount.red { color: var(--red); }
-        .cat-details .detail-item .delete-btn {
+        .income-row:last-of-type { border-bottom: 1px solid #F3F4F6; }
+        .income-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
+        .income-row .row-amount-input {
+            width: 110px;
+            padding: 8px 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: right;
+            outline: none;
+            color: var(--green-dark);
+            background: var(--green-bg);
+        }
+        .income-row .row-amount-input:focus { border-color: var(--green); }
+        .income-row .currency { font-size: 14px; font-weight: 600; color: var(--text-light); }
+
+        /* FIXED EXPENSE ROWS */
+        .fixed-row {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .fixed-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
+        .fixed-row .row-amount { font-size: 15px; font-weight: 700; color: var(--orange-dark); }
+        .fixed-row .delete-btn {
             background: none;
             border: none;
             font-size: 16px;
@@ -176,9 +196,29 @@
             color: var(--text-light);
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
         }
         .cat-details .add-row button:active { background: #E5E7EB; }
+
+        /* VARIABLE EXPENSE ROWS */
+        .detail-item {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .detail-item .info { flex: 1; }
+        .detail-item .info .title { font-size: 14px; font-weight: 600; }
+        .detail-item .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
+        .detail-item .amount.red { color: var(--red); }
+        .detail-item .delete-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0.35;
+            padding: 4px;
+        }
 
         .detail-empty {
             padding: 20px;
@@ -187,6 +227,7 @@
             font-size: 13px;
         }
 
+        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -229,7 +270,6 @@
             border-radius: 12px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.2s;
             background: white;
         }
         .form-group input:focus { border-color: var(--primary); }
@@ -244,10 +284,8 @@
             cursor: pointer;
             margin-top: 8px;
             color: white;
-            transition: opacity 0.2s;
         }
         .btn-submit:active { opacity: 0.85; }
-        .btn-submit.green { background: linear-gradient(135deg, var(--green), #34D399); }
         .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FBBF24); }
         .btn-submit.red { background: linear-gradient(135deg, var(--red), #F87171); }
 
@@ -296,7 +334,7 @@
     <div class="header">
         <div class="header-left">
             <h1>💰 Mon Budget</h1>
-            <p>Gestion de budget personnel</p>
+            <p>Brice & Melissa</p>
         </div>
         <button class="header-btn" onclick="openModal('settingsModal')">⚙️</button>
     </div>
@@ -314,23 +352,25 @@
         <button onclick="changeMonth(1)">▶</button>
     </div>
 
+    <!-- REVENUS -->
     <div class="cat-block">
         <div class="cat-header green" onclick="toggleBlock('income')">
             <div class="left">
                 <span class="emoji">💚</span>
                 <div>
                     <div class="cat-title">Revenus</div>
-                    <div class="cat-count" id="count-income">0 entrée(s)</div>
+                    <div class="cat-count" id="count-income">4 postes</div>
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-income">0,00 €</span>
+                <span class="cat-total" id="total-income">+0,00 €</span>
                 <span class="arrow" id="arrow-income">›</span>
             </div>
         </div>
         <div class="cat-details" id="details-income"></div>
     </div>
 
+    <!-- DEPENSES FIXES -->
     <div class="cat-block">
         <div class="cat-header orange" onclick="toggleBlock('fixed')">
             <div class="left">
@@ -341,13 +381,14 @@
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-fixed">0,00 €</span>
+                <span class="cat-total" id="total-fixed">-0,00 €</span>
                 <span class="arrow" id="arrow-fixed">›</span>
             </div>
         </div>
         <div class="cat-details" id="details-fixed"></div>
     </div>
 
+    <!-- DEPENSES VARIABLES -->
     <div class="cat-block">
         <div class="cat-header red" onclick="toggleBlock('variable')">
             <div class="left">
@@ -358,27 +399,44 @@
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-variable">0,00 €</span>
+                <span class="cat-total" id="total-variable">-0,00 €</span>
                 <span class="arrow" id="arrow-variable">›</span>
             </div>
         </div>
         <div class="cat-details" id="details-variable"></div>
     </div>
 
-    <!-- ADD MODAL -->
-    <div class="modal-overlay" id="addModal" onclick="closeModal('addModal', event)">
+    <!-- ADD FIXED MODAL -->
+    <div class="modal-overlay" id="addFixedModal" onclick="closeModal('addFixedModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
-            <h2 id="addModalTitle">Ajouter</h2>
+            <h2>🔒 Nouvelle dépense fixe</h2>
             <div class="form-group">
                 <label>Titre</label>
-                <input type="text" id="addTitle" placeholder="Ex: Salaire Brice">
+                <input type="text" id="fixedTitle" placeholder="Ex: Loyer, Assurance, Netflix…">
+            </div>
+            <div class="form-group">
+                <label>Montant mensuel (€)</label>
+                <input type="number" id="fixedAmount" placeholder="0,00" step="0.01" inputmode="decimal">
+            </div>
+            <button class="btn-submit orange" onclick="addFixed()">Ajouter la dépense fixe</button>
+        </div>
+    </div>
+
+    <!-- ADD VARIABLE MODAL -->
+    <div class="modal-overlay" id="addVarModal" onclick="closeModal('addVarModal', event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="handle"></div>
+            <h2>🛒 Nouvelle dépense variable</h2>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" id="varTitle" placeholder="Ex: Courses, Restaurant, Shopping…">
             </div>
             <div class="form-group">
                 <label>Montant (€)</label>
-                <input type="number" id="addAmount" placeholder="0,00" step="0.01" inputmode="decimal">
+                <input type="number" id="varAmount" placeholder="0,00" step="0.01" inputmode="decimal">
             </div>
-            <button class="btn-submit" id="addSubmitBtn" onclick="addEntry()">Ajouter</button>
+            <button class="btn-submit red" onclick="addVariable()">Ajouter la dépense</button>
         </div>
     </div>
 
@@ -416,28 +474,39 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        const TYPES = {
-            income:   { label: 'Revenus',            emoji: '💚', color: 'green',  sign: '+' },
-            fixed:    { label: 'Dépenses fixes',     emoji: '🔒', color: 'orange', sign: '-' },
-            variable: { label: 'Dépenses variables', emoji: '🛒', color: 'red',    sign: '-' }
-        };
+        // === INCOME TITLES (fixed, same every month) ===
+        const INCOME_TITLES = ['Salaire Brice', 'Salaire Melissa', 'CAF', 'Autre'];
 
-        let entries = JSON.parse(localStorage.getItem('mon_budget_v3') || '[]');
+        // === DATA STRUCTURE ===
+        // incomeData: { "2026-11": { "Salaire Brice": 2000, "Salaire Melissa": 1800, ... } }
+        // fixedExpenses: [ { id, title, amount } ]  — global, same every month
+        // variableExpenses: [ { id, title, amount, month } ] — per month
+
+        let incomeData = JSON.parse(localStorage.getItem('budget_income') || '{}');
+        let fixedExpenses = JSON.parse(localStorage.getItem('budget_fixed') || '[]');
+        let variableExpenses = JSON.parse(localStorage.getItem('budget_variable') || '[]');
         let currentDate = new Date();
-        let currentAddType = null;
 
         function init() {
             updateMonthDisplay();
             render();
         }
 
-        function save() { localStorage.setItem('mon_budget_v3', JSON.stringify(entries)); }
+        function save() {
+            localStorage.setItem('budget_income', JSON.stringify(incomeData));
+            localStorage.setItem('budget_fixed', JSON.stringify(fixedExpenses));
+            localStorage.setItem('budget_variable', JSON.stringify(variableExpenses));
+        }
 
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.textContent = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function getMonthKey() {
+            return currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0');
         }
 
         function changeMonth(delta) {
@@ -451,113 +520,160 @@
                 currentDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
         }
 
-        function getMonthKey() {
-            return currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0');
+        function fmt(n) {
+            return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
         }
 
-        function getMonthEntries(type) {
-            const key = getMonthKey();
-            return entries.filter(e => e.type === type && e.month === key);
-        }
-
+        // === RENDER ===
         function render() {
-            let totalIncome = 0, totalFixed = 0, totalVariable = 0;
+            const mk = getMonthKey();
+            const monthIncome = incomeData[mk] || {};
 
-            ['income', 'fixed', 'variable'].forEach(type => {
-                const items = getMonthEntries(type);
-                const total = items.reduce((s, e) => s + e.amount, 0);
-                const conf = TYPES[type];
+            // --- INCOME ---
+            const totalIncome = INCOME_TITLES.reduce((s, t) => s + (monthIncome[t] || 0), 0);
+            document.getElementById('total-income').textContent = '+' + fmt(totalIncome);
+            document.getElementById('count-income').textContent = INCOME_TITLES.length + ' postes';
 
-                if (type === 'income') totalIncome = total;
-                if (type === 'fixed') totalFixed = total;
-                if (type === 'variable') totalVariable = total;
-
-                document.getElementById('total-' + type).textContent =
-                    (conf.sign === '-' ? '-' : '+') + total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-                document.getElementById('count-' + type).textContent = items.length + ' entrée(s)';
-
-                const details = document.getElementById('details-' + type);
-                let html = '';
-
-                if (items.length === 0) {
-                    html += '<div class="detail-empty">Aucune entrée ce mois-ci</div>';
-                } else {
-                    items.forEach(item => {
-                        html += `
-                            <div class="detail-item">
-                                <div class="info">
-                                    <div class="title">${item.title}</div>
-                                </div>
-                                <span class="amount ${conf.color}">${conf.sign}${item.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</span>
-                                <button class="delete-btn" onclick="deleteEntry('${item.id}')">🗑️</button>
-                            </div>`;
-                    });
-                }
-
-                html += `<div class="add-row"><button onclick="openAddFor('${type}')">+ Ajouter ${type === 'income' ? 'un revenu' : 'une dépense'}</button></div>`;
-                details.innerHTML = html;
+            let incHtml = '';
+            INCOME_TITLES.forEach(title => {
+                const val = monthIncome[title] || 0;
+                incHtml += `
+                    <div class="income-row">
+                        <span class="row-title">${title}</span>
+                        <input class="row-amount-input" type="number" inputmode="decimal" step="0.01"
+                            value="${val || ''}" placeholder="0,00"
+                            onchange="updateIncome('${title}', this.value)"
+                            onfocus="this.select()">
+                        <span class="currency">€</span>
+                    </div>`;
             });
+            document.getElementById('details-income').innerHTML = incHtml;
 
-            const balance = totalIncome - totalFixed - totalVariable;
+            // --- FIXED ---
+            const totalFixed = fixedExpenses.reduce((s, e) => s + e.amount, 0);
+            document.getElementById('total-fixed').textContent = '-' + fmt(totalFixed);
+            document.getElementById('count-fixed').textContent = fixedExpenses.length + ' entrée(s)';
+
+            let fixHtml = '';
+            if (fixedExpenses.length === 0) {
+                fixHtml += '<div class="detail-empty">Aucune dépense fixe</div>';
+            } else {
+                fixedExpenses.forEach(e => {
+                    fixHtml += `
+                        <div class="fixed-row">
+                            <span class="row-title">${e.title}</span>
+                            <span class="row-amount">-${fmt(e.amount)}</span>
+                            <button class="delete-btn" onclick="deleteFixed('${e.id}')">🗑️</button>
+                        </div>`;
+                });
+            }
+            fixHtml += `<div class="add-row"><button onclick="openModal('addFixedModal')">+ Ajouter une dépense fixe</button></div>`;
+            document.getElementById('details-fixed').innerHTML = fixHtml;
+
+            // --- VARIABLE ---
+            const monthVars = variableExpenses.filter(e => e.month === mk);
+            const totalVar = monthVars.reduce((s, e) => s + e.amount, 0);
+            document.getElementById('total-variable').textContent = '-' + fmt(totalVar);
+            document.getElementById('count-variable').textContent = monthVars.length + ' entrée(s)';
+
+            let varHtml = '';
+            if (monthVars.length === 0) {
+                varHtml += '<div class="detail-empty">Aucune dépense variable ce mois-ci</div>';
+            } else {
+                monthVars.forEach(e => {
+                    varHtml += `
+                        <div class="detail-item">
+                            <div class="info"><div class="title">${e.title}</div></div>
+                            <span class="amount red">-${fmt(e.amount)}</span>
+                            <button class="delete-btn" onclick="deleteVariable('${e.id}')">🗑️</button>
+                        </div>`;
+                });
+            }
+            varHtml += `<div class="add-row"><button onclick="openModal('addVarModal')">+ Ajouter une dépense variable</button></div>`;
+            document.getElementById('details-variable').innerHTML = varHtml;
+
+            // --- BALANCE ---
+            const balance = totalIncome - totalFixed - totalVar;
             const balEl = document.getElementById('balanceValue');
-            balEl.textContent = balance.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+            balEl.textContent = fmt(balance);
             balEl.className = 'value ' + (balance >= 0 ? 'pos' : 'neg');
         }
 
-        function toggleBlock(type) {
-            document.getElementById('details-' + type).classList.toggle('open');
-            document.getElementById('arrow-' + type).classList.toggle('open');
+        // === INCOME ===
+        function updateIncome(title, val) {
+            const mk = getMonthKey();
+            if (!incomeData[mk]) incomeData[mk] = {};
+            const amount = parseFloat(val) || 0;
+            incomeData[mk][title] = amount;
+            save();
+            render();
+            showToast('💚 ' + title + ' mis à jour !');
         }
 
-        function openAddFor(type) {
-            currentAddType = type;
-            const conf = TYPES[type];
-            document.getElementById('addModalTitle').textContent = conf.emoji + ' Ajouter — ' + conf.label;
-            document.getElementById('addSubmitBtn').className = 'btn-submit ' + conf.color;
-            document.getElementById('addTitle').value = '';
-            document.getElementById('addAmount').value = '';
-
-            const placeholders = {
-                income: 'Ex: Salaire Brice, Freelance, CAF…',
-                fixed: 'Ex: Loyer, Assurance, Abonnement…',
-                variable: 'Ex: Courses, Restaurant, Shopping…'
-            };
-            document.getElementById('addTitle').placeholder = placeholders[type];
-            openModal('addModal');
-        }
-
-        function addEntry() {
-            const title = document.getElementById('addTitle').value.trim();
-            const amount = parseFloat(document.getElementById('addAmount').value);
-
+        // === FIXED EXPENSES (global) ===
+        function addFixed() {
+            const title = document.getElementById('fixedTitle').value.trim();
+            const amount = parseFloat(document.getElementById('fixedAmount').value);
             if (!title) { alert('Entre un titre !'); return; }
             if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
 
-            entries.push({
+            fixedExpenses.push({
                 id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-                type: currentAddType,
+                title,
+                amount
+            });
+
+            save(); render();
+            closeModal('addFixedModal');
+            document.getElementById('fixedTitle').value = '';
+            document.getElementById('fixedAmount').value = '';
+            showToast('🔒 Dépense fixe ajoutée !');
+        }
+
+        function deleteFixed(id) {
+            if (confirm('Supprimer cette dépense fixe ?\n\nElle sera retirée de TOUS les mois.')) {
+                fixedExpenses = fixedExpenses.filter(e => e.id !== id);
+                save(); render();
+                showToast('🗑️ Dépense fixe supprimée');
+            }
+        }
+
+        // === VARIABLE EXPENSES (per month) ===
+        function addVariable() {
+            const title = document.getElementById('varTitle').value.trim();
+            const amount = parseFloat(document.getElementById('varAmount').value);
+            if (!title) { alert('Entre un titre !'); return; }
+            if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
+
+            variableExpenses.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
                 title,
                 amount,
                 month: getMonthKey()
             });
 
-            save();
-            render();
-            closeModal('addModal');
-
-            const labels = { income: '💚 Revenu ajouté !', fixed: '🔒 Dépense fixe ajoutée !', variable: '🛒 Dépense variable ajoutée !' };
-            showToast(labels[currentAddType]);
+            save(); render();
+            closeModal('addVarModal');
+            document.getElementById('varTitle').value = '';
+            document.getElementById('varAmount').value = '';
+            showToast('🛒 Dépense variable ajoutée !');
         }
 
-        function deleteEntry(id) {
-            if (confirm('Supprimer cette entrée ?')) {
-                entries = entries.filter(e => e.id !== id);
-                save();
-                render();
-                showToast('🗑️ Entrée supprimée');
+        function deleteVariable(id) {
+            if (confirm('Supprimer cette dépense ?')) {
+                variableExpenses = variableExpenses.filter(e => e.id !== id);
+                save(); render();
+                showToast('🗑️ Dépense supprimée');
             }
         }
 
+        // === TOGGLE ===
+        function toggleBlock(type) {
+            document.getElementById('details-' + type).classList.toggle('open');
+            document.getElementById('arrow-' + type).classList.toggle('open');
+        }
+
+        // === MODALS ===
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id, e) {
             if (!e || e.target === document.getElementById(id))
@@ -566,8 +682,8 @@
 
         // === EXPORT JSON ===
         function exportJSON() {
-            if (entries.length === 0) { alert('Aucune donnée à exporter !'); return; }
-            const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json' });
+            const data = { incomeData, fixedExpenses, variableExpenses };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             downloadFile(blob, `mon-budget-${getDateStamp()}.json`);
             showToast('💾 Export JSON téléchargé !');
             closeModal('settingsModal');
@@ -575,14 +691,29 @@
 
         // === EXPORT CSV ===
         function exportCSV() {
-            if (entries.length === 0) { alert('Aucune donnée à exporter !'); return; }
             const header = 'Type;Mois;Titre;Montant (€)';
-            const rows = entries
-                .sort((a, b) => a.month.localeCompare(b.month))
-                .map(e => {
-                    const typeLabel = TYPES[e.type] ? TYPES[e.type].label : e.type;
-                    return `${typeLabel};${e.month};${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`;
+            const rows = [];
+
+            // Incomes
+            Object.keys(incomeData).sort().forEach(mk => {
+                INCOME_TITLES.forEach(title => {
+                    const val = incomeData[mk][title] || 0;
+                    if (val > 0) rows.push(`Revenu;${mk};${title};${val.toFixed(2).replace('.', ',')}`);
                 });
+            });
+
+            // Fixed
+            fixedExpenses.forEach(e => {
+                rows.push(`Dépense fixe;Tous;${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`);
+            });
+
+            // Variable
+            variableExpenses.sort((a, b) => a.month.localeCompare(b.month)).forEach(e => {
+                rows.push(`Dépense variable;${e.month};${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`);
+            });
+
+            if (rows.length === 0) { alert('Aucune donnée à exporter !'); return; }
+
             const csv = '\uFEFF' + [header, ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             downloadFile(blob, `mon-budget-${getDateStamp()}.csv`);
@@ -629,47 +760,78 @@
 
         function importJSON(content) {
             const data = JSON.parse(content);
-            let imported = Array.isArray(data) ? data : (data.entries || []);
-            imported = imported.filter(e => e.amount && e.type && e.title && e.month);
-            if (imported.length === 0) throw new Error('Aucune donnée valide');
-            imported.forEach(e => { if (!e.id) e.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); });
+            if (!data.incomeData && !data.fixedExpenses && !data.variableExpenses) throw new Error('Format JSON invalide');
 
-            const mode = confirm(`${imported.length} entrée(s) trouvée(s).\n\nOK = Ajouter\nAnnuler = Remplacer`);
-            entries = mode ? entries.concat(imported) : imported;
+            const mode = confirm('OK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données');
+
+            if (mode) {
+                // Merge incomes
+                if (data.incomeData) {
+                    Object.keys(data.incomeData).forEach(mk => {
+                        if (!incomeData[mk]) incomeData[mk] = {};
+                        Object.keys(data.incomeData[mk]).forEach(title => {
+                            incomeData[mk][title] = (incomeData[mk][title] || 0) + (data.incomeData[mk][title] || 0);
+                        });
+                    });
+                }
+                if (data.fixedExpenses) fixedExpenses = fixedExpenses.concat(data.fixedExpenses);
+                if (data.variableExpenses) variableExpenses = variableExpenses.concat(data.variableExpenses);
+            } else {
+                incomeData = data.incomeData || {};
+                fixedExpenses = data.fixedExpenses || [];
+                variableExpenses = data.variableExpenses || [];
+            }
+
             save(); render();
-            showToast(`📥 ${imported.length} entrée(s) importée(s) !`);
+            showToast('📥 Données importées !');
         }
 
         function importCSV(content) {
             const lines = content.replace(/^\uFEFF/, '').split('\n').filter(l => l.trim());
             if (lines.length < 2) throw new Error('Fichier CSV vide');
 
-            const typeMap = { 'revenus': 'income', 'dépenses fixes': 'fixed', 'dépenses variables': 'variable' };
-            const imported = [];
+            const mode = confirm('OK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données');
+            if (!mode) {
+                incomeData = {};
+                fixedExpenses = [];
+                variableExpenses = [];
+            }
 
+            let count = 0;
             for (let i = 1; i < lines.length; i++) {
                 const p = lines[i].split(';');
                 if (p.length < 4) continue;
-                const type = typeMap[p[0].trim().toLowerCase()];
+                const type = p[0].trim().toLowerCase();
                 const month = p[1].trim();
                 const title = p[2].trim();
                 const amount = parseFloat(p[3].replace(',', '.'));
-                if (!type || !month || !title || !amount || isNaN(amount)) continue;
-                imported.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, type, title, amount, month });
+                if (!title || !amount || isNaN(amount)) continue;
+
+                if (type === 'revenu') {
+                    if (!incomeData[month]) incomeData[month] = {};
+                    incomeData[month][title] = amount;
+                    count++;
+                } else if (type === 'dépense fixe') {
+                    fixedExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, title, amount });
+                    count++;
+                } else if (type === 'dépense variable') {
+                    variableExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, title, amount, month });
+                    count++;
+                }
             }
 
-            if (imported.length === 0) throw new Error('Aucune donnée valide');
-
-            const mode = confirm(`${imported.length} entrée(s) trouvée(s).\n\nOK = Ajouter\nAnnuler = Remplacer`);
-            entries = mode ? entries.concat(imported) : imported;
+            if (count === 0) throw new Error('Aucune donnée valide');
             save(); render();
-            showToast(`📥 ${imported.length} entrée(s) importée(s) !`);
+            showToast(`📥 ${count} entrée(s) importée(s) !`);
         }
 
+        // === CLEAR ===
         function confirmClearAll() {
             if (confirm('⚠️ Supprimer TOUTES les données ?\n\nPense à exporter avant !')) {
                 if (confirm('Vraiment tout supprimer ? 😱')) {
-                    entries = [];
+                    incomeData = {};
+                    fixedExpenses = [];
+                    variableExpenses = [];
                     save(); render();
                     showToast('🗑️ Données supprimées');
                     closeModal('settingsModal');
