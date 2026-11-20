@@ -39,7 +39,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* HEADER */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: white;
@@ -62,7 +61,6 @@
         }
         .header-btn:active { background: rgba(255,255,255,0.35); }
 
-        /* BALANCE BAR */
         .balance-bar {
             display: flex;
             gap: 10px;
@@ -82,7 +80,6 @@
         .balance-card .value.pos { color: var(--green); }
         .balance-card .value.neg { color: var(--red); }
 
-        /* MONTH SELECTOR */
         .month-selector {
             display: flex;
             align-items: center;
@@ -105,7 +102,6 @@
         }
         .month-selector span { font-size: 16px; font-weight: 600; min-width: 160px; text-align: center; }
 
-        /* CATEGORY BLOCKS */
         .cat-block {
             margin: 0 16px 12px;
             border-radius: 16px;
@@ -135,7 +131,6 @@
         .cat-header.orange { background: var(--orange-bg); color: var(--orange-dark); }
         .cat-header.red { background: var(--red-bg); color: var(--red-dark); }
 
-        /* DETAIL LIST */
         .cat-details {
             max-height: 0;
             overflow: hidden;
@@ -154,7 +149,6 @@
         .cat-details .detail-item:last-child { border-bottom: none; }
         .cat-details .detail-item .info { flex: 1; }
         .cat-details .detail-item .info .title { font-size: 14px; font-weight: 600; }
-        .cat-details .detail-item .info .meta { font-size: 11px; color: var(--text-light); margin-top: 2px; }
         .cat-details .detail-item .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
         .cat-details .detail-item .amount.green { color: var(--green); }
         .cat-details .detail-item .amount.orange { color: var(--orange-dark); }
@@ -193,7 +187,6 @@
             font-size: 13px;
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -258,7 +251,6 @@
         .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FBBF24); }
         .btn-submit.red { background: linear-gradient(135deg, var(--red), #F87171); }
 
-        /* SETTINGS */
         .settings-list { list-style: none; }
         .settings-list li {
             padding: 16px 0;
@@ -275,7 +267,6 @@
         .settings-list li .s-desc { font-size: 12px; color: var(--text-light); margin-top: 2px; }
         .settings-list li .s-arrow { color: #D1D5DB; font-size: 18px; }
 
-        /* TOAST */
         .toast {
             display: none;
             position: fixed;
@@ -302,7 +293,6 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <div class="header">
         <div class="header-left">
             <h1>💰 Mon Budget</h1>
@@ -311,7 +301,6 @@
         <button class="header-btn" onclick="openModal('settingsModal')">⚙️</button>
     </div>
 
-    <!-- BALANCE -->
     <div class="balance-bar">
         <div class="balance-card">
             <div class="label">Solde restant</div>
@@ -319,15 +308,13 @@
         </div>
     </div>
 
-    <!-- MONTH SELECTOR -->
     <div class="month-selector">
         <button onclick="changeMonth(-1)">◀</button>
         <span id="currentMonth"></span>
         <button onclick="changeMonth(1)">▶</button>
     </div>
 
-    <!-- REVENUS -->
-    <div class="cat-block" id="block-income">
+    <div class="cat-block">
         <div class="cat-header green" onclick="toggleBlock('income')">
             <div class="left">
                 <span class="emoji">💚</span>
@@ -344,8 +331,7 @@
         <div class="cat-details" id="details-income"></div>
     </div>
 
-    <!-- DEPENSES FIXES -->
-    <div class="cat-block" id="block-fixed">
+    <div class="cat-block">
         <div class="cat-header orange" onclick="toggleBlock('fixed')">
             <div class="left">
                 <span class="emoji">🔒</span>
@@ -362,8 +348,7 @@
         <div class="cat-details" id="details-fixed"></div>
     </div>
 
-    <!-- DEPENSES VARIABLES -->
-    <div class="cat-block" id="block-variable">
+    <div class="cat-block">
         <div class="cat-header red" onclick="toggleBlock('variable')">
             <div class="left">
                 <span class="emoji">🛒</span>
@@ -387,15 +372,11 @@
             <h2 id="addModalTitle">Ajouter</h2>
             <div class="form-group">
                 <label>Titre</label>
-                <input type="text" id="addTitle" placeholder="Ex: Salaire Brice, Loyer, Courses…">
+                <input type="text" id="addTitle" placeholder="Ex: Salaire Brice">
             </div>
             <div class="form-group">
                 <label>Montant (€)</label>
                 <input type="number" id="addAmount" placeholder="0,00" step="0.01" inputmode="decimal">
-            </div>
-            <div class="form-group">
-                <label>Date</label>
-                <input type="date" id="addDate">
             </div>
             <button class="btn-submit" id="addSubmitBtn" onclick="addEntry()">Ajouter</button>
         </div>
@@ -435,19 +416,16 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // === CONFIG ===
         const TYPES = {
             income:   { label: 'Revenus',            emoji: '💚', color: 'green',  sign: '+' },
             fixed:    { label: 'Dépenses fixes',     emoji: '🔒', color: 'orange', sign: '-' },
             variable: { label: 'Dépenses variables', emoji: '🛒', color: 'red',    sign: '-' }
         };
 
-        // === STATE ===
         let entries = JSON.parse(localStorage.getItem('mon_budget_v3') || '[]');
         let currentDate = new Date();
         let currentAddType = null;
 
-        // === INIT ===
         function init() {
             updateMonthDisplay();
             render();
@@ -462,7 +440,6 @@
             setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // === MONTH ===
         function changeMonth(delta) {
             currentDate.setMonth(currentDate.getMonth() + delta);
             updateMonthDisplay();
@@ -474,15 +451,15 @@
                 currentDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
         }
 
-        function getMonthEntries(type) {
-            const m = currentDate.getMonth(), y = currentDate.getFullYear();
-            return entries.filter(e => {
-                const d = new Date(e.date);
-                return e.type === type && d.getMonth() === m && d.getFullYear() === y;
-            }).sort((a, b) => new Date(b.date) - new Date(a.date));
+        function getMonthKey() {
+            return currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0');
         }
 
-        // === RENDER ===
+        function getMonthEntries(type) {
+            const key = getMonthKey();
+            return entries.filter(e => e.type === type && e.month === key);
+        }
+
         function render() {
             let totalIncome = 0, totalFixed = 0, totalVariable = 0;
 
@@ -495,7 +472,8 @@
                 if (type === 'fixed') totalFixed = total;
                 if (type === 'variable') totalVariable = total;
 
-                document.getElementById('total-' + type).textContent = (conf.sign === '-' ? '-' : '+') + total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+                document.getElementById('total-' + type).textContent =
+                    (conf.sign === '-' ? '-' : '+') + total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
                 document.getElementById('count-' + type).textContent = items.length + ' entrée(s)';
 
                 const details = document.getElementById('details-' + type);
@@ -505,12 +483,10 @@
                     html += '<div class="detail-empty">Aucune entrée ce mois-ci</div>';
                 } else {
                     items.forEach(item => {
-                        const date = new Date(item.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
                         html += `
                             <div class="detail-item">
                                 <div class="info">
                                     <div class="title">${item.title}</div>
-                                    <div class="meta">${date}</div>
                                 </div>
                                 <span class="amount ${conf.color}">${conf.sign}${item.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</span>
                                 <button class="delete-btn" onclick="deleteEntry('${item.id}')">🗑️</button>
@@ -522,22 +498,17 @@
                 details.innerHTML = html;
             });
 
-            // Balance
             const balance = totalIncome - totalFixed - totalVariable;
             const balEl = document.getElementById('balanceValue');
             balEl.textContent = balance.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
             balEl.className = 'value ' + (balance >= 0 ? 'pos' : 'neg');
         }
 
-        // === TOGGLE BLOCK ===
         function toggleBlock(type) {
-            const details = document.getElementById('details-' + type);
-            const arrow = document.getElementById('arrow-' + type);
-            details.classList.toggle('open');
-            arrow.classList.toggle('open');
+            document.getElementById('details-' + type).classList.toggle('open');
+            document.getElementById('arrow-' + type).classList.toggle('open');
         }
 
-        // === ADD ENTRY ===
         function openAddFor(type) {
             currentAddType = type;
             const conf = TYPES[type];
@@ -545,34 +516,29 @@
             document.getElementById('addSubmitBtn').className = 'btn-submit ' + conf.color;
             document.getElementById('addTitle').value = '';
             document.getElementById('addAmount').value = '';
-            document.getElementById('addDate').value = new Date().toISOString().split('T')[0];
 
-            if (type === 'income') {
-                document.getElementById('addTitle').placeholder = 'Ex: Salaire Brice, Freelance, CAF…';
-            } else if (type === 'fixed') {
-                document.getElementById('addTitle').placeholder = 'Ex: Loyer, Assurance, Abonnement…';
-            } else {
-                document.getElementById('addTitle').placeholder = 'Ex: Courses, Restaurant, Shopping…';
-            }
-
+            const placeholders = {
+                income: 'Ex: Salaire Brice, Freelance, CAF…',
+                fixed: 'Ex: Loyer, Assurance, Abonnement…',
+                variable: 'Ex: Courses, Restaurant, Shopping…'
+            };
+            document.getElementById('addTitle').placeholder = placeholders[type];
             openModal('addModal');
         }
 
         function addEntry() {
             const title = document.getElementById('addTitle').value.trim();
             const amount = parseFloat(document.getElementById('addAmount').value);
-            const date = document.getElementById('addDate').value;
 
             if (!title) { alert('Entre un titre !'); return; }
             if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
-            if (!date) { alert('Choisis une date !'); return; }
 
             entries.push({
                 id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
                 type: currentAddType,
                 title,
                 amount,
-                date
+                month: getMonthKey()
             });
 
             save();
@@ -592,7 +558,6 @@
             }
         }
 
-        // === MODALS ===
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id, e) {
             if (!e || e.target === document.getElementById(id))
@@ -611,12 +576,12 @@
         // === EXPORT CSV ===
         function exportCSV() {
             if (entries.length === 0) { alert('Aucune donnée à exporter !'); return; }
-            const header = 'Type;Date;Titre;Montant (€)';
+            const header = 'Type;Mois;Titre;Montant (€)';
             const rows = entries
-                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .sort((a, b) => a.month.localeCompare(b.month))
                 .map(e => {
                     const typeLabel = TYPES[e.type] ? TYPES[e.type].label : e.type;
-                    return `${typeLabel};${e.date};${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`;
+                    return `${typeLabel};${e.month};${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`;
                 });
             const csv = '\uFEFF' + [header, ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -664,16 +629,9 @@
 
         function importJSON(content) {
             const data = JSON.parse(content);
-            let imported = [];
-
-            if (Array.isArray(data)) {
-                imported = data.filter(e => e.amount && e.type && e.title && e.date);
-            } else if (data.entries) {
-                imported = data.entries.filter(e => e.amount && e.type && e.title && e.date);
-            }
-
+            let imported = Array.isArray(data) ? data : (data.entries || []);
+            imported = imported.filter(e => e.amount && e.type && e.title && e.month);
             if (imported.length === 0) throw new Error('Aucune donnée valide');
-
             imported.forEach(e => { if (!e.id) e.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); });
 
             const mode = confirm(`${imported.length} entrée(s) trouvée(s).\n\nOK = Ajouter\nAnnuler = Remplacer`);
@@ -692,12 +650,12 @@
             for (let i = 1; i < lines.length; i++) {
                 const p = lines[i].split(';');
                 if (p.length < 4) continue;
-                const type = typeMap[p[0].trim().toLowerCase()] || null;
-                const date = p[1].trim();
+                const type = typeMap[p[0].trim().toLowerCase()];
+                const month = p[1].trim();
                 const title = p[2].trim();
                 const amount = parseFloat(p[3].replace(',', '.'));
-                if (!type || !date || !title || !amount || isNaN(amount)) continue;
-                imported.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, type, title, amount, date });
+                if (!type || !month || !title || !amount || isNaN(amount)) continue;
+                imported.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, type, title, amount, month });
             }
 
             if (imported.length === 0) throw new Error('Aucune donnée valide');
@@ -708,7 +666,6 @@
             showToast(`📥 ${imported.length} entrée(s) importée(s) !`);
         }
 
-        // === CLEAR ===
         function confirmClearAll() {
             if (confirm('⚠️ Supprimer TOUTES les données ?\n\nPense à exporter avant !')) {
                 if (confirm('Vraiment tout supprimer ? 😱')) {
@@ -720,7 +677,6 @@
             }
         }
 
-        // === START ===
         init();
     </script>
 </body>
