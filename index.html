@@ -16,6 +16,7 @@
             --primary-light: #7C7FF2;
             --danger: #EF4444;
             --success: #10B981;
+            --success-light: #D1FAE5;
             --warning: #F59E0B;
             --bg: #F0F2F5;
             --card: #FFFFFF;
@@ -59,10 +60,10 @@
         }
         .header-btn:active { background: rgba(255,255,255,0.35); }
 
-        /* SUMMARY CARDS */
-        .summary {
+        /* SUMMARY ROW */
+        .summary-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             padding: 0 16px;
             margin-top: -20px;
         }
@@ -70,14 +71,16 @@
             flex: 1;
             background: var(--card);
             border-radius: 16px;
-            padding: 16px;
+            padding: 14px;
             box-shadow: var(--shadow);
             text-align: center;
         }
-        .summary-card .label { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-        .summary-card .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
-        .summary-card .value.total { color: var(--primary); }
-        .summary-card .value.count { color: var(--success); }
+        .summary-card .label { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-card .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+        .summary-card .value.income { color: var(--success); }
+        .summary-card .value.expense { color: var(--danger); }
+        .summary-card .value.balance-pos { color: var(--primary); }
+        .summary-card .value.balance-neg { color: var(--danger); }
 
         /* MONTH SELECTOR */
         .month-selector {
@@ -107,9 +110,57 @@
             font-size: 16px;
             font-weight: 700;
             padding: 16px 20px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title .add-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .section-title .add-btn:active { opacity: 0.85; }
+
+        /* INCOME LIST */
+        .income-list { padding: 0 16px; }
+        .income-item {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid var(--success);
+        }
+        .income-item .emoji { font-size: 24px; }
+        .income-item .info { flex: 1; }
+        .income-item .info .title { font-size: 14px; font-weight: 600; }
+        .income-item .info .meta { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+        .income-item .amount { font-size: 16px; font-weight: 700; color: var(--success); white-space: nowrap; }
+        .income-item .delete-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.4;
         }
 
-        /* CATEGORY BREAKDOWN */
+        .income-empty {
+            text-align: center;
+            padding: 16px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        /* CATEGORIES GRID */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -259,8 +310,6 @@
         .btn-submit {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
             border: none;
             border-radius: 14px;
             font-size: 16px;
@@ -268,7 +317,10 @@
             cursor: pointer;
             margin-top: 8px;
             transition: opacity 0.2s;
+            color: white;
         }
+        .btn-submit.primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
+        .btn-submit.green { background: linear-gradient(135deg, var(--success), #34D399); }
         .btn-submit:active { opacity: 0.85; }
 
         /* TABS */
@@ -294,7 +346,7 @@
             border-bottom-color: var(--primary);
         }
 
-        /* SETTINGS MODAL */
+        /* SETTINGS */
         .settings-list { list-style: none; }
         .settings-list li {
             padding: 16px 0;
@@ -333,7 +385,6 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* HIDDEN FILE INPUT */
         #importInput { display: none; }
     </style>
 </head>
@@ -351,14 +402,18 @@
     </div>
 
     <!-- SUMMARY -->
-    <div class="summary">
+    <div class="summary-row">
         <div class="summary-card">
-            <div class="label">Total du mois</div>
-            <div class="value total" id="totalMonth">0,00 €</div>
+            <div class="label">Revenus</div>
+            <div class="value income" id="totalIncome">0,00 €</div>
         </div>
         <div class="summary-card">
-            <div class="label">Nb dépenses</div>
-            <div class="value count" id="countMonth">0</div>
+            <div class="label">Dépenses</div>
+            <div class="value expense" id="totalExpense">0,00 €</div>
+        </div>
+        <div class="summary-card">
+            <div class="label">Solde</div>
+            <div class="value" id="totalBalance">0,00 €</div>
         </div>
     </div>
 
@@ -369,10 +424,17 @@
         <button onclick="changeMonth(1)">▶</button>
     </div>
 
+    <!-- INCOME SECTION -->
+    <div class="section-title">
+        <span>💚 Revenus</span>
+        <button class="add-btn" onclick="openIncomeModal()">+ Ajouter</button>
+    </div>
+    <div class="income-list" id="incomeList"></div>
+
     <!-- TABS -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('categories', this)">Catégories</button>
-        <button class="tab-btn" onclick="switchTab('list', this)">Liste</button>
+        <button class="tab-btn" onclick="switchTab('list', this)">Liste dépenses</button>
     </div>
 
     <!-- CATEGORIES VIEW -->
@@ -393,28 +455,44 @@
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
             <h2>Nouvelle dépense</h2>
-
             <div class="form-group">
                 <label>Montant (€)</label>
                 <input type="number" id="inputAmount" placeholder="0,00" step="0.01" inputmode="decimal">
             </div>
-
             <div class="form-group">
                 <label>Catégorie</label>
                 <div class="category-picker" id="categoryPicker"></div>
             </div>
-
             <div class="form-group">
                 <label>Description</label>
                 <input type="text" id="inputDesc" placeholder="Ex: Courses Carrefour">
             </div>
-
             <div class="form-group">
                 <label>Date</label>
                 <input type="date" id="inputDate">
             </div>
+            <button class="btn-submit primary" onclick="addExpense()">Ajouter la dépense</button>
+        </div>
+    </div>
 
-            <button class="btn-submit" onclick="addExpense()">Ajouter la dépense</button>
+    <!-- ADD INCOME MODAL -->
+    <div class="modal-overlay" id="incomeModal" onclick="closeModal('incomeModal', event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="handle"></div>
+            <h2>💚 Nouveau revenu</h2>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" id="incomeTitle" placeholder="Ex: Salaire Brice, Freelance…">
+            </div>
+            <div class="form-group">
+                <label>Montant (€)</label>
+                <input type="number" id="incomeAmount" placeholder="0,00" step="0.01" inputmode="decimal">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="incomeDate">
+            </div>
+            <button class="btn-submit green" onclick="addIncome()">Ajouter le revenu</button>
         </div>
     </div>
 
@@ -423,7 +501,6 @@
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
             <h2>⚙️ Paramètres</h2>
-
             <ul class="settings-list">
                 <li onclick="exportCSV()">
                     <span class="s-emoji">📊</span>
@@ -482,6 +559,7 @@
 
         // === STATE ===
         let expenses = JSON.parse(localStorage.getItem('mes_depenses') || '[]');
+        let incomes = JSON.parse(localStorage.getItem('mes_revenus') || '[]');
         let currentDate = new Date();
         let selectedCategory = null;
 
@@ -491,11 +569,13 @@
             updateMonthDisplay();
             render();
             document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('incomeDate').value = new Date().toISOString().split('T')[0];
         }
 
         // === STORAGE ===
         function save() {
             localStorage.setItem('mes_depenses', JSON.stringify(expenses));
+            localStorage.setItem('mes_revenus', JSON.stringify(incomes));
         }
 
         // === TOAST ===
@@ -506,7 +586,7 @@
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        // === MONTH NAVIGATION ===
+        // === MONTH ===
         function changeMonth(delta) {
             currentDate.setMonth(currentDate.getMonth() + delta);
             updateMonthDisplay();
@@ -519,27 +599,93 @@
                 currentDate.toLocaleDateString('fr-FR', options).replace(/^\w/, c => c.toUpperCase());
         }
 
-        function getMonthExpenses() {
+        function filterByMonth(arr) {
             const month = currentDate.getMonth();
             const year = currentDate.getFullYear();
-            return expenses.filter(e => {
+            return arr.filter(e => {
                 const d = new Date(e.date);
                 return d.getMonth() === month && d.getFullYear() === year;
-            }).sort((a, b) => new Date(b.date) - new Date(a.date));
+            });
         }
 
         // === RENDER ===
         function render() {
-            const monthExpenses = getMonthExpenses();
-            const total = monthExpenses.reduce((s, e) => s + e.amount, 0);
+            const monthExpenses = filterByMonth(expenses).sort((a, b) => new Date(b.date) - new Date(a.date));
+            const monthIncomes = filterByMonth(incomes).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            document.getElementById('totalMonth').textContent = total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-            document.getElementById('countMonth').textContent = monthExpenses.length;
+            const totalExp = monthExpenses.reduce((s, e) => s + e.amount, 0);
+            const totalInc = monthIncomes.reduce((s, e) => s + e.amount, 0);
+            const balance = totalInc - totalExp;
 
+            document.getElementById('totalIncome').textContent = totalInc.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+            document.getElementById('totalExpense').textContent = totalExp.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+
+            const balEl = document.getElementById('totalBalance');
+            balEl.textContent = balance.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+            balEl.className = 'value ' + (balance >= 0 ? 'balance-pos' : 'balance-neg');
+
+            renderIncomes(monthIncomes);
             renderCategories(monthExpenses);
             renderList(monthExpenses);
         }
 
+        // === INCOMES ===
+        function renderIncomes(monthIncomes) {
+            const list = document.getElementById('incomeList');
+            if (monthIncomes.length === 0) {
+                list.innerHTML = '<div class="income-empty">Aucun revenu ce mois-ci. Appuie sur "+ Ajouter" 👆</div>';
+                return;
+            }
+            list.innerHTML = monthIncomes.map(inc => {
+                const date = new Date(inc.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+                return `
+                    <div class="income-item">
+                        <span class="emoji">💵</span>
+                        <div class="info">
+                            <div class="title">${inc.title}</div>
+                            <div class="meta">${date}</div>
+                        </div>
+                        <span class="amount">+${inc.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}</span>
+                        <button class="delete-btn" onclick="deleteIncome('${inc.id}')">🗑️</button>
+                    </div>`;
+            }).join('');
+        }
+
+        function addIncome() {
+            const title = document.getElementById('incomeTitle').value.trim();
+            const amount = parseFloat(document.getElementById('incomeAmount').value);
+            const date = document.getElementById('incomeDate').value;
+
+            if (!title) { alert('Entre un titre !'); return; }
+            if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
+            if (!date) { alert('Choisis une date !'); return; }
+
+            incomes.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+                title,
+                amount,
+                date
+            });
+
+            save();
+            render();
+            closeModal('incomeModal');
+            document.getElementById('incomeTitle').value = '';
+            document.getElementById('incomeAmount').value = '';
+            document.getElementById('incomeDate').value = new Date().toISOString().split('T')[0];
+            showToast('💚 Revenu ajouté !');
+        }
+
+        function deleteIncome(id) {
+            if (confirm('Supprimer ce revenu ?')) {
+                incomes = incomes.filter(e => e.id !== id);
+                save();
+                render();
+                showToast('🗑️ Revenu supprimé');
+            }
+        }
+
+        // === EXPENSES ===
         function renderCategories(monthExpenses) {
             const grid = document.getElementById('categoriesGrid');
             const totals = {};
@@ -567,7 +713,6 @@
                     </div>`;
                 return;
             }
-
             list.innerHTML = monthExpenses.map(e => {
                 const cat = CATEGORIES.find(c => c.id === e.category) || CATEGORIES[7];
                 const date = new Date(e.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
@@ -584,7 +729,6 @@
             }).join('');
         }
 
-        // === CATEGORY PICKER ===
         function renderCategoryPicker() {
             const picker = document.getElementById('categoryPicker');
             picker.innerHTML = CATEGORIES.map(c => `
@@ -601,7 +745,6 @@
             document.getElementById('cat-' + id).classList.add('selected');
         }
 
-        // === ADD / DELETE ===
         function addExpense() {
             const amount = parseFloat(document.getElementById('inputAmount').value);
             const desc = document.getElementById('inputDesc').value.trim();
@@ -622,7 +765,7 @@
             save();
             render();
             closeModal('addModal');
-            resetForm();
+            resetExpenseForm();
             showToast('✅ Dépense ajoutée !');
         }
 
@@ -635,7 +778,7 @@
             }
         }
 
-        function resetForm() {
+        function resetExpenseForm() {
             document.getElementById('inputAmount').value = '';
             document.getElementById('inputDesc').value = '';
             document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
@@ -644,14 +787,9 @@
         }
 
         // === MODALS ===
-        function openAddModal() {
-            document.getElementById('addModal').classList.add('active');
-        }
-
-        function openSettings() {
-            document.getElementById('settingsModal').classList.add('active');
-        }
-
+        function openAddModal() { document.getElementById('addModal').classList.add('active'); }
+        function openIncomeModal() { document.getElementById('incomeModal').classList.add('active'); }
+        function openSettings() { document.getElementById('settingsModal').classList.add('active'); }
         function closeModal(id, e) {
             if (!e || e.target === document.getElementById(id)) {
                 document.getElementById(id).classList.remove('active');
@@ -666,35 +804,32 @@
             document.getElementById('listView').style.display = tab === 'list' ? 'block' : 'none';
         }
 
-        // =====================
-        // === EXPORT / IMPORT ===
-        // =====================
-
-        // --- EXPORT JSON ---
+        // === EXPORT JSON ===
         function exportJSON() {
-            if (expenses.length === 0) { alert('Aucune dépense à exporter !'); return; }
-
-            const data = JSON.stringify(expenses, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
+            const data = { expenses, incomes };
+            if (expenses.length === 0 && incomes.length === 0) { alert('Aucune donnée à exporter !'); return; }
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             downloadFile(blob, `mes-depenses-${getDateStamp()}.json`);
             showToast('💾 Export JSON téléchargé !');
             closeModal('settingsModal');
         }
 
-        // --- EXPORT CSV ---
+        // === EXPORT CSV ===
         function exportCSV() {
-            if (expenses.length === 0) { alert('Aucune dépense à exporter !'); return; }
+            if (expenses.length === 0 && incomes.length === 0) { alert('Aucune donnée à exporter !'); return; }
 
-            const header = 'Date;Catégorie;Description;Montant (€)';
-            const rows = expenses
-                .sort((a, b) => new Date(a.date) - new Date(b.date))
-                .map(e => {
-                    const cat = CATEGORIES.find(c => c.id === e.category);
-                    const catName = cat ? cat.name : e.category;
-                    const amount = e.amount.toFixed(2).replace('.', ',');
-                    const desc = (e.description || '').replace(/;/g, ',');
-                    return `${e.date};${catName};${desc};${amount}`;
-                });
+            const header = 'Type;Date;Catégorie/Titre;Description;Montant (€)';
+            const rows = [];
+
+            incomes.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(inc => {
+                rows.push(`Revenu;${inc.date};${inc.title.replace(/;/g, ',')};;${inc.amount.toFixed(2).replace('.', ',')}`);
+            });
+
+            expenses.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(e => {
+                const cat = CATEGORIES.find(c => c.id === e.category);
+                const catName = cat ? cat.name : e.category;
+                rows.push(`Dépense;${e.date};${catName};${(e.description || '').replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`);
+            });
 
             const csv = '\uFEFF' + [header, ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -703,7 +838,6 @@
             closeModal('settingsModal');
         }
 
-        // --- DOWNLOAD HELPER ---
         function downloadFile(blob, filename) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -720,7 +854,7 @@
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // --- IMPORT ---
+        // === IMPORT ===
         function triggerImport() {
             closeModal('settingsModal');
             document.getElementById('importInput').click();
@@ -729,18 +863,13 @@
         function handleImport(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const content = e.target.result;
                 try {
-                    if (file.name.endsWith('.json')) {
-                        importJSON(content);
-                    } else if (file.name.endsWith('.csv')) {
-                        importCSV(content);
-                    } else {
-                        alert('Format non supporté. Utilise un fichier .json ou .csv');
-                    }
+                    if (file.name.endsWith('.json')) importJSON(content);
+                    else if (file.name.endsWith('.csv')) importCSV(content);
+                    else alert('Format non supporté. Utilise un fichier .json ou .csv');
                 } catch (err) {
                     alert('Erreur lors de l\'import : ' + err.message);
                 }
@@ -751,27 +880,38 @@
 
         function importJSON(content) {
             const data = JSON.parse(content);
-            if (!Array.isArray(data)) throw new Error('Format JSON invalide');
 
-            const valid = data.filter(e => e.amount && e.category && e.date);
-            if (valid.length === 0) throw new Error('Aucune dépense valide trouvée');
+            // Support ancien format (tableau) et nouveau format (objet)
+            let impExpenses = [];
+            let impIncomes = [];
 
-            const mode = confirm(
-                `${valid.length} dépense(s) trouvée(s).\n\nOK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données`
-            );
+            if (Array.isArray(data)) {
+                impExpenses = data.filter(e => e.amount && e.category && e.date);
+            } else {
+                impExpenses = (data.expenses || []).filter(e => e.amount && e.category && e.date);
+                impIncomes = (data.incomes || []).filter(e => e.amount && e.title && e.date);
+            }
+
+            const total = impExpenses.length + impIncomes.length;
+            if (total === 0) throw new Error('Aucune donnée valide trouvée');
+
+            const mode = confirm(`${total} entrée(s) trouvée(s).\n\nOK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données`);
+
+            const ensureId = arr => arr.forEach(e => { if (!e.id) e.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); });
+            ensureId(impExpenses);
+            ensureId(impIncomes);
 
             if (mode) {
-                valid.forEach(e => {
-                    if (!e.id) e.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-                });
-                expenses = expenses.concat(valid);
+                expenses = expenses.concat(impExpenses);
+                incomes = incomes.concat(impIncomes);
             } else {
-                expenses = valid;
+                expenses = impExpenses;
+                incomes = impIncomes;
             }
 
             save();
             render();
-            showToast(`📥 ${valid.length} dépense(s) importée(s) !`);
+            showToast(`📥 ${total} entrée(s) importée(s) !`);
         }
 
         function importCSV(content) {
@@ -781,44 +921,54 @@
             const catMap = {};
             CATEGORIES.forEach(c => { catMap[c.name.toLowerCase()] = c.id; });
 
-            const imported = [];
+            const impExpenses = [];
+            const impIncomes = [];
+
             for (let i = 1; i < lines.length; i++) {
                 const parts = lines[i].split(';');
-                if (parts.length < 4) continue;
+                if (parts.length < 5) continue;
 
-                const date = parts[0].trim();
-                const catName = parts[1].trim().toLowerCase();
-                const desc = parts[2].trim();
-                const amount = parseFloat(parts[3].replace(',', '.'));
+                const type = parts[0].trim().toLowerCase();
+                const date = parts[1].trim();
+                const catOrTitle = parts[2].trim();
+                const desc = parts[3].trim();
+                const amount = parseFloat(parts[4].replace(',', '.'));
 
                 if (!date || !amount || isNaN(amount)) continue;
 
-                imported.push({
-                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i,
-                    date,
-                    category: catMap[catName] || 'other',
-                    description: desc,
-                    amount
-                });
+                const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i;
+
+                if (type === 'revenu') {
+                    impIncomes.push({ id, title: catOrTitle, amount, date });
+                } else {
+                    impExpenses.push({ id, date, category: catMap[catOrTitle.toLowerCase()] || 'other', description: desc, amount });
+                }
             }
 
-            if (imported.length === 0) throw new Error('Aucune dépense valide dans le CSV');
+            const total = impExpenses.length + impIncomes.length;
+            if (total === 0) throw new Error('Aucune donnée valide dans le CSV');
 
-            const mode = confirm(
-                `${imported.length} dépense(s) trouvée(s).\n\nOK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données`
-            );
+            const mode = confirm(`${total} entrée(s) trouvée(s).\n\nOK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données`);
 
-            expenses = mode ? expenses.concat(imported) : imported;
+            if (mode) {
+                expenses = expenses.concat(impExpenses);
+                incomes = incomes.concat(impIncomes);
+            } else {
+                expenses = impExpenses;
+                incomes = impIncomes;
+            }
+
             save();
             render();
-            showToast(`📥 ${imported.length} dépense(s) importée(s) !`);
+            showToast(`📥 ${total} entrée(s) importée(s) !`);
         }
 
-        // --- CLEAR ALL ---
+        // === CLEAR ALL ===
         function confirmClearAll() {
-            if (confirm('⚠️ Supprimer TOUTES tes dépenses ?\n\nCette action est irréversible !\n\nPense à exporter tes données avant.')) {
+            if (confirm('⚠️ Supprimer TOUTES tes données (dépenses + revenus) ?\n\nCette action est irréversible !\n\nPense à exporter avant.')) {
                 if (confirm('Vraiment tout supprimer ? 😱')) {
                     expenses = [];
+                    incomes = [];
                     save();
                     render();
                     showToast('🗑️ Toutes les données supprimées');
