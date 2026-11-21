@@ -7,31 +7,33 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Mon Budget">
+    <meta name="theme-color" content="#0F0F14">
     <title>Mon Budget</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --green: #10B981;
-            --green-bg: #ECFDF5;
-            --green-dark: #059669;
-            --orange: #F59E0B;
-            --orange-bg: #FFFBEB;
-            --orange-dark: #D97706;
-            --red: #EF4444;
-            --red-bg: #FEF2F2;
-            --red-dark: #DC2626;
-            --primary: #5B5FEF;
-            --primary-light: #7C7FF2;
-            --bg: #F0F2F5;
-            --card: #FFFFFF;
-            --text: #1F2937;
-            --text-light: #6B7280;
-            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --bg: #0F0F14;
+            --surface: #1A1A24;
+            --surface2: #22222E;
+            --surface3: #2A2A38;
+            --border: #2E2E3E;
+            --text: #EAEAF0;
+            --text-dim: #8888A0;
+            --text-muted: #55556A;
+            --green: #00D68F;
+            --green-dim: rgba(0,214,143,0.12);
+            --orange: #FFAA2C;
+            --orange-dim: rgba(255,170,44,0.12);
+            --red: #FF5C72;
+            --red-dim: rgba(255,92,114,0.12);
+            --accent: #7B6FFF;
+            --accent-dim: rgba(123,111,255,0.15);
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -39,192 +41,238 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* HEADER */
         .header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            padding: 50px 20px 30px;
-            border-radius: 0 0 24px 24px;
+            padding: 56px 24px 28px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
-        .header-left h1 { font-size: 26px; font-weight: 700; }
-        .header-left p { opacity: 0.85; margin-top: 4px; font-size: 14px; }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #7B6FFF, #00D68F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { color: var(--text-dim); font-size: 13px; margin-top: 4px; font-weight: 500; }
         .header-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
             border-radius: 12px;
-            padding: 8px 10px;
-            font-size: 18px;
+            padding: 10px 12px;
+            font-size: 16px;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        .header-btn:active { background: rgba(255,255,255,0.35); }
+        .header-btn:active { background: var(--surface3); }
 
-        .balance-bar {
-            display: flex;
-            gap: 10px;
-            padding: 0 16px;
-            margin-top: -20px;
-        }
+        /* BALANCE CARD */
+        .balance-section { padding: 0 20px 8px; }
         .balance-card {
-            flex: 1;
-            background: var(--card);
-            border-radius: 16px;
-            padding: 14px;
+            background: linear-gradient(135deg, #1E1E2E, #252538);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
             box-shadow: var(--shadow);
             text-align: center;
         }
-        .balance-card .label { font-size: 10px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
-        .balance-card .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+        .balance-card .label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .balance-card .value {
+            font-size: 36px;
+            font-weight: 800;
+            margin-top: 8px;
+            letter-spacing: -1px;
+        }
         .balance-card .value.pos { color: var(--green); }
         .balance-card .value.neg { color: var(--red); }
+        .balance-card .sub-row {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .balance-card .sub-item { text-align: center; }
+        .balance-card .sub-item .sub-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .balance-card .sub-item .sub-val { font-size: 16px; font-weight: 700; margin-top: 4px; }
+        .balance-card .sub-item .sub-val.g { color: var(--green); }
+        .balance-card .sub-item .sub-val.o { color: var(--orange); }
+        .balance-card .sub-item .sub-val.r { color: var(--red); }
 
+        /* MONTH SELECTOR */
         .month-selector {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            padding: 20px 16px 12px;
+            gap: 20px;
+            padding: 20px 20px 16px;
         }
         .month-selector button {
-            background: var(--card);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 18px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
         }
-        .month-selector span { font-size: 16px; font-weight: 600; min-width: 160px; text-align: center; }
+        .month-selector button:active { background: var(--surface3); }
+        .month-selector span {
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 170px;
+            text-align: center;
+            color: var(--text);
+        }
 
+        /* CATEGORY BLOCKS */
         .cat-block {
-            margin: 0 16px 12px;
-            border-radius: 16px;
+            margin: 0 20px 14px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            background: var(--surface);
         }
 
         .cat-header {
-            padding: 16px 18px;
+            padding: 18px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
+            transition: background 0.2s;
         }
-        .cat-header:active { opacity: 0.9; }
-        .cat-header .left { display: flex; align-items: center; gap: 12px; }
-        .cat-header .emoji { font-size: 26px; }
-        .cat-header .cat-title { font-size: 16px; font-weight: 700; }
-        .cat-header .cat-count { font-size: 12px; opacity: 0.7; margin-top: 1px; }
-        .cat-header .right { display: flex; align-items: center; gap: 10px; }
-        .cat-header .cat-total { font-size: 18px; font-weight: 700; }
-        .cat-header .arrow { font-size: 16px; opacity: 0.5; transition: transform 0.3s; }
+        .cat-header:active { background: var(--surface2); }
+        .cat-header .left { display: flex; align-items: center; gap: 14px; }
+        .cat-header .icon-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .cat-header .icon-circle.green { background: var(--green-dim); }
+        .cat-header .icon-circle.orange { background: var(--orange-dim); }
+        .cat-header .icon-circle.red { background: var(--red-dim); }
+        .cat-header .cat-title { font-size: 15px; font-weight: 700; color: var(--text); }
+        .cat-header .cat-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+        .cat-header .right { display: flex; align-items: center; gap: 12px; }
+        .cat-header .cat-total { font-size: 17px; font-weight: 800; }
+        .cat-header .cat-total.green { color: var(--green); }
+        .cat-header .cat-total.orange { color: var(--orange); }
+        .cat-header .cat-total.red { color: var(--red); }
+        .cat-header .arrow {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
         .cat-header .arrow.open { transform: rotate(90deg); }
 
-        .cat-header.green { background: var(--green-bg); color: var(--green-dark); }
-        .cat-header.orange { background: var(--orange-bg); color: var(--orange-dark); }
-        .cat-header.red { background: var(--red-bg); color: var(--red-dark); }
-
+        /* DETAILS */
         .cat-details {
             max-height: 0;
             overflow: hidden;
-            background: var(--card);
             transition: max-height 0.35s ease;
         }
         .cat-details.open { max-height: 2000px; }
 
-        /* INCOME ROWS (editable) */
+        /* INCOME ROWS */
         .income-row {
-            padding: 12px 18px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #F3F4F6;
+            border-top: 1px solid var(--border);
         }
-        .income-row:last-of-type { border-bottom: 1px solid #F3F4F6; }
-        .income-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
+        .income-row .row-title {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
         .income-row .row-amount-input {
             width: 110px;
-            padding: 8px 12px;
-            border: 2px solid #E5E7EB;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
             border-radius: 10px;
             font-size: 15px;
             font-weight: 700;
             text-align: right;
             outline: none;
-            color: var(--green-dark);
-            background: var(--green-bg);
+            color: var(--green);
+            background: var(--green-dim);
+            transition: border-color 0.2s;
         }
         .income-row .row-amount-input:focus { border-color: var(--green); }
-        .income-row .currency { font-size: 14px; font-weight: 600; color: var(--text-light); }
+        .income-row .row-amount-input::placeholder { color: var(--text-muted); }
+        .income-row .currency { font-size: 14px; font-weight: 600; color: var(--text-muted); }
 
-        /* FIXED EXPENSE ROWS */
-        .fixed-row {
-            padding: 12px 18px;
+        /* FIXED / VARIABLE ROWS */
+        .detail-row {
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #F3F4F6;
+            border-top: 1px solid var(--border);
         }
-        .fixed-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
-        .fixed-row .row-amount { font-size: 15px; font-weight: 700; color: var(--orange-dark); }
-        .fixed-row .delete-btn {
+        .detail-row .info { flex: 1; }
+        .detail-row .info .title { font-size: 14px; font-weight: 600; color: var(--text); }
+        .detail-row .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
+        .detail-row .amount.orange { color: var(--orange); }
+        .detail-row .amount.red { color: var(--red); }
+        .detail-row .delete-btn {
             background: none;
             border: none;
-            font-size: 16px;
-            cursor: pointer;
-            opacity: 0.35;
-            padding: 4px;
-        }
-
-        .cat-details .add-row {
-            padding: 12px 18px;
-            text-align: center;
-        }
-        .cat-details .add-row button {
-            background: #F3F4F6;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
             font-size: 14px;
+            cursor: pointer;
+            opacity: 0.3;
+            padding: 6px;
+            color: var(--text-dim);
+            transition: opacity 0.2s;
+        }
+        .detail-row .delete-btn:active { opacity: 0.7; }
+
+        .add-row {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .add-row button {
+            background: var(--surface2);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-light);
+            color: var(--text-dim);
             cursor: pointer;
             width: 100%;
+            transition: all 0.2s;
         }
-        .cat-details .add-row button:active { background: #E5E7EB; }
-
-        /* VARIABLE EXPENSE ROWS */
-        .detail-item {
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid #F3F4F6;
-        }
-        .detail-item .info { flex: 1; }
-        .detail-item .info .title { font-size: 14px; font-weight: 600; }
-        .detail-item .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
-        .detail-item .amount.red { color: var(--red); }
-        .detail-item .delete-btn {
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            opacity: 0.35;
-            padding: 4px;
-        }
+        .add-row button:active { background: var(--surface3); border-color: var(--text-muted); }
 
         .detail-empty {
-            padding: 20px;
+            padding: 24px 20px;
             text-align: center;
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 13px;
+            border-top: 1px solid var(--border);
         }
 
         /* MODAL */
@@ -232,16 +280,18 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 200;
             align-items: flex-end;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
         .modal-overlay.active { display: flex; }
         .modal {
-            background: var(--card);
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 24px 24px 0 0;
-            padding: 24px 20px 40px;
+            padding: 24px 24px 44px;
             width: 100%;
             max-width: 500px;
             max-height: 85vh;
@@ -252,27 +302,38 @@
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
-        .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; text-align: center; }
+        .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; text-align: center; color: var(--text); }
         .modal .handle {
             width: 40px;
             height: 4px;
-            background: #D1D5DB;
+            background: var(--surface3);
             border-radius: 2px;
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
         }
 
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         .form-group input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #E5E7EB;
+            border: 1px solid var(--border);
             border-radius: 12px;
             font-size: 16px;
             outline: none;
-            background: white;
+            background: var(--surface2);
+            color: var(--text);
+            transition: border-color 0.2s;
         }
-        .form-group input:focus { border-color: var(--primary); }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .form-group input:focus { border-color: var(--accent); }
 
         .btn-submit {
             width: 100%;
@@ -283,42 +344,48 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 8px;
-            color: white;
+            color: #0F0F14;
+            transition: opacity 0.2s;
         }
         .btn-submit:active { opacity: 0.85; }
-        .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FBBF24); }
-        .btn-submit.red { background: linear-gradient(135deg, var(--red), #F87171); }
+        .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FFD060); }
+        .btn-submit.red { background: linear-gradient(135deg, var(--red), #FF8A9A); }
 
+        /* SETTINGS */
         .settings-list { list-style: none; }
         .settings-list li {
-            padding: 16px 0;
-            border-bottom: 1px solid #F3F4F6;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
         }
         .settings-list li:last-child { border-bottom: none; }
-        .settings-list li .s-emoji { font-size: 24px; }
+        .settings-list li .s-emoji { font-size: 22px; }
         .settings-list li .s-info { flex: 1; }
-        .settings-list li .s-title { font-size: 15px; font-weight: 600; }
-        .settings-list li .s-desc { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-        .settings-list li .s-arrow { color: #D1D5DB; font-size: 18px; }
+        .settings-list li .s-title { font-size: 15px; font-weight: 600; color: var(--text); }
+        .settings-list li .s-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+        .settings-list li .s-arrow { color: var(--text-muted); font-size: 16px; }
+        .settings-list li:active { opacity: 0.7; }
 
+        /* TOAST */
         .toast {
             display: none;
             position: fixed;
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1F2937;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 14px 28px;
+            border-radius: 14px;
             font-size: 14px;
             font-weight: 600;
             z-index: 999;
             animation: fadeInUp 0.3s ease;
+            box-shadow: var(--shadow);
         }
         .toast.show { display: block; }
         @keyframes fadeInUp {
@@ -332,17 +399,31 @@
 <body>
 
     <div class="header">
-        <div class="header-left">
-            <h1>💰 Mon Budget</h1>
+        <div>
+            <h1>Mon Budget</h1>
             <p>Brice & Melissa</p>
         </div>
         <button class="header-btn" onclick="openModal('settingsModal')">⚙️</button>
     </div>
 
-    <div class="balance-bar">
+    <div class="balance-section">
         <div class="balance-card">
             <div class="label">Solde restant</div>
             <div class="value" id="balanceValue">0,00 €</div>
+            <div class="sub-row">
+                <div class="sub-item">
+                    <div class="sub-label">Revenus</div>
+                    <div class="sub-val g" id="subIncome">+0 €</div>
+                </div>
+                <div class="sub-item">
+                    <div class="sub-label">Fixes</div>
+                    <div class="sub-val o" id="subFixed">-0 €</div>
+                </div>
+                <div class="sub-item">
+                    <div class="sub-label">Variables</div>
+                    <div class="sub-val r" id="subVariable">-0 €</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -354,52 +435,52 @@
 
     <!-- REVENUS -->
     <div class="cat-block">
-        <div class="cat-header green" onclick="toggleBlock('income')">
+        <div class="cat-header" onclick="toggleBlock('income')">
             <div class="left">
-                <span class="emoji">💚</span>
+                <div class="icon-circle green">💚</div>
                 <div>
                     <div class="cat-title">Revenus</div>
                     <div class="cat-count" id="count-income">4 postes</div>
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-income">+0,00 €</span>
+                <span class="cat-total green" id="total-income">+0 €</span>
                 <span class="arrow" id="arrow-income">›</span>
             </div>
         </div>
         <div class="cat-details" id="details-income"></div>
     </div>
 
-    <!-- DEPENSES FIXES -->
+    <!-- FIXES -->
     <div class="cat-block">
-        <div class="cat-header orange" onclick="toggleBlock('fixed')">
+        <div class="cat-header" onclick="toggleBlock('fixed')">
             <div class="left">
-                <span class="emoji">🔒</span>
+                <div class="icon-circle orange">🔒</div>
                 <div>
                     <div class="cat-title">Dépenses fixes</div>
                     <div class="cat-count" id="count-fixed">0 entrée(s)</div>
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-fixed">-0,00 €</span>
+                <span class="cat-total orange" id="total-fixed">-0 €</span>
                 <span class="arrow" id="arrow-fixed">›</span>
             </div>
         </div>
         <div class="cat-details" id="details-fixed"></div>
     </div>
 
-    <!-- DEPENSES VARIABLES -->
+    <!-- VARIABLES -->
     <div class="cat-block">
-        <div class="cat-header red" onclick="toggleBlock('variable')">
+        <div class="cat-header" onclick="toggleBlock('variable')">
             <div class="left">
-                <span class="emoji">🛒</span>
+                <div class="icon-circle red">🛒</div>
                 <div>
                     <div class="cat-title">Dépenses variables</div>
                     <div class="cat-count" id="count-variable">0 entrée(s)</div>
                 </div>
             </div>
             <div class="right">
-                <span class="cat-total" id="total-variable">-0,00 €</span>
+                <span class="cat-total red" id="total-variable">-0 €</span>
                 <span class="arrow" id="arrow-variable">›</span>
             </div>
         </div>
@@ -474,23 +555,14 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // === INCOME TITLES (fixed, same every month) ===
         const INCOME_TITLES = ['Salaire Brice', 'Salaire Melissa', 'CAF', 'Autre'];
-
-        // === DATA STRUCTURE ===
-        // incomeData: { "2026-11": { "Salaire Brice": 2000, "Salaire Melissa": 1800, ... } }
-        // fixedExpenses: [ { id, title, amount } ]  — global, same every month
-        // variableExpenses: [ { id, title, amount, month } ] — per month
 
         let incomeData = JSON.parse(localStorage.getItem('budget_income') || '{}');
         let fixedExpenses = JSON.parse(localStorage.getItem('budget_fixed') || '[]');
         let variableExpenses = JSON.parse(localStorage.getItem('budget_variable') || '[]');
         let currentDate = new Date();
 
-        function init() {
-            updateMonthDisplay();
-            render();
-        }
+        function init() { updateMonthDisplay(); render(); }
 
         function save() {
             localStorage.setItem('budget_income', JSON.stringify(incomeData));
@@ -520,16 +592,13 @@
                 currentDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
         }
 
-        function fmt(n) {
-            return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
-        }
+        function fmt(n) { return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }); }
 
-        // === RENDER ===
         function render() {
             const mk = getMonthKey();
             const monthIncome = incomeData[mk] || {};
 
-            // --- INCOME ---
+            // INCOME
             const totalIncome = INCOME_TITLES.reduce((s, t) => s + (monthIncome[t] || 0), 0);
             document.getElementById('total-income').textContent = '+' + fmt(totalIncome);
             document.getElementById('count-income').textContent = INCOME_TITLES.length + ' postes';
@@ -549,7 +618,7 @@
             });
             document.getElementById('details-income').innerHTML = incHtml;
 
-            // --- FIXED ---
+            // FIXED
             const totalFixed = fixedExpenses.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-fixed').textContent = '-' + fmt(totalFixed);
             document.getElementById('count-fixed').textContent = fixedExpenses.length + ' entrée(s)';
@@ -560,9 +629,9 @@
             } else {
                 fixedExpenses.forEach(e => {
                     fixHtml += `
-                        <div class="fixed-row">
-                            <span class="row-title">${e.title}</span>
-                            <span class="row-amount">-${fmt(e.amount)}</span>
+                        <div class="detail-row">
+                            <div class="info"><div class="title">${e.title}</div></div>
+                            <span class="amount orange">-${fmt(e.amount)}</span>
                             <button class="delete-btn" onclick="deleteFixed('${e.id}')">🗑️</button>
                         </div>`;
                 });
@@ -570,7 +639,7 @@
             fixHtml += `<div class="add-row"><button onclick="openModal('addFixedModal')">+ Ajouter une dépense fixe</button></div>`;
             document.getElementById('details-fixed').innerHTML = fixHtml;
 
-            // --- VARIABLE ---
+            // VARIABLE
             const monthVars = variableExpenses.filter(e => e.month === mk);
             const totalVar = monthVars.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-variable').textContent = '-' + fmt(totalVar);
@@ -582,7 +651,7 @@
             } else {
                 monthVars.forEach(e => {
                     varHtml += `
-                        <div class="detail-item">
+                        <div class="detail-row">
                             <div class="info"><div class="title">${e.title}</div></div>
                             <span class="amount red">-${fmt(e.amount)}</span>
                             <button class="delete-btn" onclick="deleteVariable('${e.id}')">🗑️</button>
@@ -592,71 +661,57 @@
             varHtml += `<div class="add-row"><button onclick="openModal('addVarModal')">+ Ajouter une dépense variable</button></div>`;
             document.getElementById('details-variable').innerHTML = varHtml;
 
-            // --- BALANCE ---
+            // BALANCE
             const balance = totalIncome - totalFixed - totalVar;
             const balEl = document.getElementById('balanceValue');
             balEl.textContent = fmt(balance);
             balEl.className = 'value ' + (balance >= 0 ? 'pos' : 'neg');
+
+            document.getElementById('subIncome').textContent = '+' + fmt(totalIncome);
+            document.getElementById('subFixed').textContent = '-' + fmt(totalFixed);
+            document.getElementById('subVariable').textContent = '-' + fmt(totalVar);
         }
 
-        // === INCOME ===
         function updateIncome(title, val) {
             const mk = getMonthKey();
             if (!incomeData[mk]) incomeData[mk] = {};
-            const amount = parseFloat(val) || 0;
-            incomeData[mk][title] = amount;
-            save();
-            render();
-            showToast('💚 ' + title + ' mis à jour !');
+            incomeData[mk][title] = parseFloat(val) || 0;
+            save(); render();
+            showToast('💚 ' + title + ' mis à jour');
         }
 
-        // === FIXED EXPENSES (global) ===
         function addFixed() {
             const title = document.getElementById('fixedTitle').value.trim();
             const amount = parseFloat(document.getElementById('fixedAmount').value);
             if (!title) { alert('Entre un titre !'); return; }
             if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
-
-            fixedExpenses.push({
-                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-                title,
-                amount
-            });
-
+            fixedExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title, amount });
             save(); render();
             closeModal('addFixedModal');
             document.getElementById('fixedTitle').value = '';
             document.getElementById('fixedAmount').value = '';
-            showToast('🔒 Dépense fixe ajoutée !');
+            showToast('🔒 Dépense fixe ajoutée');
         }
 
         function deleteFixed(id) {
-            if (confirm('Supprimer cette dépense fixe ?\n\nElle sera retirée de TOUS les mois.')) {
+            if (confirm('Supprimer cette dépense fixe ?\nElle sera retirée de tous les mois.')) {
                 fixedExpenses = fixedExpenses.filter(e => e.id !== id);
                 save(); render();
                 showToast('🗑️ Dépense fixe supprimée');
             }
         }
 
-        // === VARIABLE EXPENSES (per month) ===
         function addVariable() {
             const title = document.getElementById('varTitle').value.trim();
             const amount = parseFloat(document.getElementById('varAmount').value);
             if (!title) { alert('Entre un titre !'); return; }
             if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
-
-            variableExpenses.push({
-                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-                title,
-                amount,
-                month: getMonthKey()
-            });
-
+            variableExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title, amount, month: getMonthKey() });
             save(); render();
             closeModal('addVarModal');
             document.getElementById('varTitle').value = '';
             document.getElementById('varAmount').value = '';
-            showToast('🛒 Dépense variable ajoutée !');
+            showToast('🛒 Dépense variable ajoutée');
         }
 
         function deleteVariable(id) {
@@ -667,67 +722,55 @@
             }
         }
 
-        // === TOGGLE ===
         function toggleBlock(type) {
             document.getElementById('details-' + type).classList.toggle('open');
             document.getElementById('arrow-' + type).classList.toggle('open');
         }
 
-        // === MODALS ===
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id, e) {
             if (!e || e.target === document.getElementById(id))
                 document.getElementById(id).classList.remove('active');
         }
 
-        // === EXPORT JSON ===
+        // EXPORT JSON
         function exportJSON() {
             const data = { incomeData, fixedExpenses, variableExpenses };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             downloadFile(blob, `mon-budget-${getDateStamp()}.json`);
-            showToast('💾 Export JSON téléchargé !');
+            showToast('💾 Export JSON téléchargé');
             closeModal('settingsModal');
         }
 
-        // === EXPORT CSV ===
+        // EXPORT CSV
         function exportCSV() {
             const header = 'Type;Mois;Titre;Montant (€)';
             const rows = [];
-
-            // Incomes
             Object.keys(incomeData).sort().forEach(mk => {
                 INCOME_TITLES.forEach(title => {
                     const val = incomeData[mk][title] || 0;
                     if (val > 0) rows.push(`Revenu;${mk};${title};${val.toFixed(2).replace('.', ',')}`);
                 });
             });
-
-            // Fixed
             fixedExpenses.forEach(e => {
                 rows.push(`Dépense fixe;Tous;${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`);
             });
-
-            // Variable
             variableExpenses.sort((a, b) => a.month.localeCompare(b.month)).forEach(e => {
                 rows.push(`Dépense variable;${e.month};${e.title.replace(/;/g, ',')};${e.amount.toFixed(2).replace('.', ',')}`);
             });
-
-            if (rows.length === 0) { alert('Aucune donnée à exporter !'); return; }
-
+            if (rows.length === 0) { alert('Aucune donnée !'); return; }
             const csv = '\uFEFF' + [header, ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             downloadFile(blob, `mon-budget-${getDateStamp()}.csv`);
-            showToast('📊 Export CSV téléchargé !');
+            showToast('📊 Export CSV téléchargé');
             closeModal('settingsModal');
         }
 
         function downloadFile(blob, filename) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
@@ -737,7 +780,7 @@
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // === IMPORT ===
+        // IMPORT
         function triggerImport() {
             closeModal('settingsModal');
             document.getElementById('importInput').click();
@@ -760,20 +803,13 @@
 
         function importJSON(content) {
             const data = JSON.parse(content);
-            if (!data.incomeData && !data.fixedExpenses && !data.variableExpenses) throw new Error('Format JSON invalide');
-
-            const mode = confirm('OK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données');
-
+            if (!data.incomeData && !data.fixedExpenses && !data.variableExpenses) throw new Error('Format invalide');
+            const mode = confirm('OK = Ajouter\nAnnuler = Remplacer');
             if (mode) {
-                // Merge incomes
-                if (data.incomeData) {
-                    Object.keys(data.incomeData).forEach(mk => {
-                        if (!incomeData[mk]) incomeData[mk] = {};
-                        Object.keys(data.incomeData[mk]).forEach(title => {
-                            incomeData[mk][title] = (incomeData[mk][title] || 0) + (data.incomeData[mk][title] || 0);
-                        });
-                    });
-                }
+                if (data.incomeData) Object.keys(data.incomeData).forEach(mk => {
+                    if (!incomeData[mk]) incomeData[mk] = {};
+                    Object.keys(data.incomeData[mk]).forEach(t => { incomeData[mk][t] = (incomeData[mk][t] || 0) + (data.incomeData[mk][t] || 0); });
+                });
                 if (data.fixedExpenses) fixedExpenses = fixedExpenses.concat(data.fixedExpenses);
                 if (data.variableExpenses) variableExpenses = variableExpenses.concat(data.variableExpenses);
             } else {
@@ -781,22 +817,15 @@
                 fixedExpenses = data.fixedExpenses || [];
                 variableExpenses = data.variableExpenses || [];
             }
-
             save(); render();
-            showToast('📥 Données importées !');
+            showToast('📥 Données importées');
         }
 
         function importCSV(content) {
             const lines = content.replace(/^\uFEFF/, '').split('\n').filter(l => l.trim());
-            if (lines.length < 2) throw new Error('Fichier CSV vide');
-
-            const mode = confirm('OK = Ajouter aux données existantes\nAnnuler = Remplacer toutes les données');
-            if (!mode) {
-                incomeData = {};
-                fixedExpenses = [];
-                variableExpenses = [];
-            }
-
+            if (lines.length < 2) throw new Error('CSV vide');
+            const mode = confirm('OK = Ajouter\nAnnuler = Remplacer');
+            if (!mode) { incomeData = {}; fixedExpenses = []; variableExpenses = []; }
             let count = 0;
             for (let i = 1; i < lines.length; i++) {
                 const p = lines[i].split(';');
@@ -806,32 +835,24 @@
                 const title = p[2].trim();
                 const amount = parseFloat(p[3].replace(',', '.'));
                 if (!title || !amount || isNaN(amount)) continue;
-
                 if (type === 'revenu') {
                     if (!incomeData[month]) incomeData[month] = {};
-                    incomeData[month][title] = amount;
-                    count++;
+                    incomeData[month][title] = amount; count++;
                 } else if (type === 'dépense fixe') {
-                    fixedExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, title, amount });
-                    count++;
+                    fixedExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,7) + i, title, amount }); count++;
                 } else if (type === 'dépense variable') {
-                    variableExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7) + i, title, amount, month });
-                    count++;
+                    variableExpenses.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,7) + i, title, amount, month }); count++;
                 }
             }
-
             if (count === 0) throw new Error('Aucune donnée valide');
             save(); render();
-            showToast(`📥 ${count} entrée(s) importée(s) !`);
+            showToast(`📥 ${count} entrée(s) importée(s)`);
         }
 
-        // === CLEAR ===
         function confirmClearAll() {
-            if (confirm('⚠️ Supprimer TOUTES les données ?\n\nPense à exporter avant !')) {
+            if (confirm('⚠️ Supprimer TOUTES les données ?\nPense à exporter avant !')) {
                 if (confirm('Vraiment tout supprimer ? 😱')) {
-                    incomeData = {};
-                    fixedExpenses = [];
-                    variableExpenses = [];
+                    incomeData = {}; fixedExpenses = []; variableExpenses = [];
                     save(); render();
                     showToast('🗑️ Données supprimées');
                     closeModal('settingsModal');
