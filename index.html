@@ -207,8 +207,12 @@
             gap: 12px;
             border-top: 1px solid var(--border);
         }
-        .detail-row .info { flex: 1; }
+        .detail-row .info {
+            flex: 1;
+            cursor: pointer;
+        }
         .detail-row .info .title { font-size: 14px; font-weight: 600; }
+        .detail-row .info .tap-hint { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
         .detail-row .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
         .detail-row .amount.orange { color: var(--orange); }
         .detail-row .amount.red { color: var(--red); }
@@ -311,6 +315,7 @@
         .btn-submit:active { opacity: 0.85; }
         .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FFD060); }
         .btn-submit.red { background: linear-gradient(135deg, var(--red), #FF8A9A); }
+        .btn-submit.accent { background: linear-gradient(135deg, var(--accent), #9B8FFF); }
 
         .settings-list { list-style: none; }
         .settings-list li {
@@ -358,7 +363,6 @@
 </head>
 <body>
 
-    <!-- Canvas caché pour générer l'icône -->
     <canvas id="iconCanvas" width="512" height="512"></canvas>
 
     <div class="header">
@@ -447,6 +451,7 @@
         <div class="cat-details" id="details-variable"></div>
     </div>
 
+    <!-- ADD FIXED MODAL -->
     <div class="modal-overlay" id="addFixedModal" onclick="closeModal('addFixedModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -463,6 +468,25 @@
         </div>
     </div>
 
+    <!-- EDIT FIXED MODAL -->
+    <div class="modal-overlay" id="editFixedModal" onclick="closeModal('editFixedModal', event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="handle"></div>
+            <h2>✏️ Modifier la dépense fixe</h2>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" id="editFixedTitle" placeholder="Titre">
+            </div>
+            <div class="form-group">
+                <label>Montant mensuel (€)</label>
+                <input type="number" id="editFixedAmount" placeholder="0,00" step="0.01" inputmode="decimal">
+            </div>
+            <input type="hidden" id="editFixedId">
+            <button class="btn-submit accent" onclick="saveEditFixed()">💾 Enregistrer les modifications</button>
+        </div>
+    </div>
+
+    <!-- ADD VARIABLE MODAL -->
     <div class="modal-overlay" id="addVarModal" onclick="closeModal('addVarModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -479,6 +503,7 @@
         </div>
     </div>
 
+    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal" onclick="closeModal('settingsModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -512,59 +537,35 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // === GÉNÉRATION AUTOMATIQUE DE L'ICÔNE 💰 ===
+        // === ICÔNE ===
         (function generateIcon() {
             const canvas = document.getElementById('iconCanvas');
             const ctx = canvas.getContext('2d');
             const s = 512;
-
-            // Fond dark arrondi
             const bg = ctx.createLinearGradient(0, 0, s, s);
-            bg.addColorStop(0, '#151520');
-            bg.addColorStop(1, '#1E1E2E');
+            bg.addColorStop(0, '#151520'); bg.addColorStop(1, '#1E1E2E');
             const r = 112;
             ctx.beginPath();
             ctx.moveTo(r, 0); ctx.lineTo(s-r, 0); ctx.quadraticCurveTo(s, 0, s, r);
             ctx.lineTo(s, s-r); ctx.quadraticCurveTo(s, s, s-r, s);
             ctx.lineTo(r, s); ctx.quadraticCurveTo(0, s, 0, s-r);
             ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
-            ctx.closePath();
-            ctx.fillStyle = bg;
-            ctx.fill();
-
-            // Glow
+            ctx.closePath(); ctx.fillStyle = bg; ctx.fill();
             const glow = ctx.createRadialGradient(256, 220, 40, 256, 220, 180);
             glow.addColorStop(0, 'rgba(123,111,255,0.15)');
             glow.addColorStop(0.5, 'rgba(0,214,143,0.08)');
             glow.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = glow;
-            ctx.fillRect(0, 0, s, s);
-
-            // Cercle subtil
-            ctx.beginPath();
-            ctx.arc(256, 230, 120, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(123,111,255,0.15)';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            // Emoji 💰
-            ctx.font = '200px serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
+            ctx.fillStyle = glow; ctx.fillRect(0, 0, s, s);
+            ctx.beginPath(); ctx.arc(256, 230, 120, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(123,111,255,0.15)'; ctx.lineWidth = 3; ctx.stroke();
+            ctx.font = '200px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText('💰', 256, 230);
-
-            // Texte BUDGET
             ctx.font = '700 48px -apple-system, BlinkMacSystemFont, sans-serif';
             const tg = ctx.createLinearGradient(130, 400, 380, 400);
-            tg.addColorStop(0, '#7B6FFF');
-            tg.addColorStop(1, '#00D68F');
-            ctx.fillStyle = tg;
-            ctx.fillText('BUDGET', 256, 410);
-
-            // Injecter comme apple-touch-icon
+            tg.addColorStop(0, '#7B6FFF'); tg.addColorStop(1, '#00D68F');
+            ctx.fillStyle = tg; ctx.fillText('BUDGET', 256, 410);
             const link = document.createElement('link');
-            link.rel = 'apple-touch-icon';
-            link.href = canvas.toDataURL('image/png');
+            link.rel = 'apple-touch-icon'; link.href = canvas.toDataURL('image/png');
             document.head.appendChild(link);
         })();
 
@@ -612,12 +613,14 @@
             const mk = getMonthKey();
             const monthIncome = incomeData[mk] || {};
 
+            // INCOME — trié du plus grand au plus petit
+            const sortedIncomeTitles = [...INCOME_TITLES].sort((a, b) => (monthIncome[b] || 0) - (monthIncome[a] || 0));
             const totalIncome = INCOME_TITLES.reduce((s, t) => s + (monthIncome[t] || 0), 0);
             document.getElementById('total-income').textContent = '+' + fmt(totalIncome);
             document.getElementById('count-income').textContent = INCOME_TITLES.length + ' postes';
 
             let incHtml = '';
-            INCOME_TITLES.forEach(title => {
+            sortedIncomeTitles.forEach(title => {
                 const val = monthIncome[title] || 0;
                 incHtml += `
                     <div class="income-row">
@@ -631,18 +634,23 @@
             });
             document.getElementById('details-income').innerHTML = incHtml;
 
+            // FIXED — trié du plus grand au plus petit
+            const sortedFixed = [...fixedExpenses].sort((a, b) => b.amount - a.amount);
             const totalFixed = fixedExpenses.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-fixed').textContent = '-' + fmt(totalFixed);
             document.getElementById('count-fixed').textContent = fixedExpenses.length + ' entrée(s)';
 
             let fixHtml = '';
-            if (fixedExpenses.length === 0) {
+            if (sortedFixed.length === 0) {
                 fixHtml += '<div class="detail-empty">Aucune dépense fixe</div>';
             } else {
-                fixedExpenses.forEach(e => {
+                sortedFixed.forEach(e => {
                     fixHtml += `
                         <div class="detail-row">
-                            <div class="info"><div class="title">${e.title}</div></div>
+                            <div class="info" onclick="openEditFixed('${e.id}')">
+                                <div class="title">${e.title}</div>
+                                <div class="tap-hint">Appuyer pour modifier</div>
+                            </div>
                             <span class="amount orange">-${fmt(e.amount)}</span>
                             <button class="delete-btn" onclick="deleteFixed('${e.id}')">🗑️</button>
                         </div>`;
@@ -651,16 +659,18 @@
             fixHtml += `<div class="add-row"><button onclick="openModal('addFixedModal')">+ Ajouter une dépense fixe</button></div>`;
             document.getElementById('details-fixed').innerHTML = fixHtml;
 
+            // VARIABLE — trié du plus grand au plus petit
             const monthVars = variableExpenses.filter(e => e.month === mk);
+            const sortedVars = [...monthVars].sort((a, b) => b.amount - a.amount);
             const totalVar = monthVars.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-variable').textContent = '-' + fmt(totalVar);
             document.getElementById('count-variable').textContent = monthVars.length + ' entrée(s)';
 
             let varHtml = '';
-            if (monthVars.length === 0) {
+            if (sortedVars.length === 0) {
                 varHtml += '<div class="detail-empty">Aucune dépense variable ce mois-ci</div>';
             } else {
-                monthVars.forEach(e => {
+                sortedVars.forEach(e => {
                     varHtml += `
                         <div class="detail-row">
                             <div class="info"><div class="title">${e.title}</div></div>
@@ -672,6 +682,7 @@
             varHtml += `<div class="add-row"><button onclick="openModal('addVarModal')">+ Ajouter une dépense variable</button></div>`;
             document.getElementById('details-variable').innerHTML = varHtml;
 
+            // BALANCE
             const balance = totalIncome - totalFixed - totalVar;
             const balEl = document.getElementById('balanceValue');
             balEl.textContent = fmt(balance);
@@ -690,6 +701,7 @@
             showToast('💚 ' + title + ' mis à jour');
         }
 
+        // === DÉPENSES FIXES ===
         function addFixed() {
             const title = document.getElementById('fixedTitle').value.trim();
             const amount = parseFloat(document.getElementById('fixedAmount').value);
@@ -703,6 +715,30 @@
             showToast('🔒 Dépense fixe ajoutée');
         }
 
+        function openEditFixed(id) {
+            const expense = fixedExpenses.find(e => e.id === id);
+            if (!expense) return;
+            document.getElementById('editFixedId').value = id;
+            document.getElementById('editFixedTitle').value = expense.title;
+            document.getElementById('editFixedAmount').value = expense.amount;
+            openModal('editFixedModal');
+        }
+
+        function saveEditFixed() {
+            const id = document.getElementById('editFixedId').value;
+            const title = document.getElementById('editFixedTitle').value.trim();
+            const amount = parseFloat(document.getElementById('editFixedAmount').value);
+            if (!title) { alert('Entre un titre !'); return; }
+            if (!amount || amount <= 0) { alert('Entre un montant valide !'); return; }
+            const expense = fixedExpenses.find(e => e.id === id);
+            if (!expense) return;
+            expense.title = title;
+            expense.amount = amount;
+            save(); render();
+            closeModal('editFixedModal');
+            showToast('✏️ Dépense fixe modifiée');
+        }
+
         function deleteFixed(id) {
             if (confirm('Supprimer cette dépense fixe ?\nElle sera retirée de tous les mois.')) {
                 fixedExpenses = fixedExpenses.filter(e => e.id !== id);
@@ -711,6 +747,7 @@
             }
         }
 
+        // === DÉPENSES VARIABLES ===
         function addVariable() {
             const title = document.getElementById('varTitle').value.trim();
             const amount = parseFloat(document.getElementById('varAmount').value);
@@ -743,6 +780,7 @@
                 document.getElementById(id).classList.remove('active');
         }
 
+        // === EXPORT / IMPORT ===
         function exportJSON() {
             const data = { incomeData, fixedExpenses, variableExpenses };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
