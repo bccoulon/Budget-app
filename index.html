@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-title" content="Mon Budget">
     <meta name="theme-color" content="#0F0F14">
     <title>Mon Budget</title>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -28,7 +29,6 @@
             --red: #FF5C72;
             --red-dim: rgba(255,92,114,0.12);
             --accent: #7B6FFF;
-            --accent-dim: rgba(123,111,255,0.15);
             --shadow: 0 4px 24px rgba(0,0,0,0.3);
         }
 
@@ -41,7 +41,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* HEADER */
         .header {
             padding: 56px 24px 28px;
             display: flex;
@@ -65,11 +64,9 @@
             padding: 10px 12px;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s;
         }
         .header-btn:active { background: var(--surface3); }
 
-        /* BALANCE CARD */
         .balance-section { padding: 0 20px 8px; }
         .balance-card {
             background: linear-gradient(135deg, #1E1E2E, #252538);
@@ -109,7 +106,6 @@
         .balance-card .sub-item .sub-val.o { color: var(--orange); }
         .balance-card .sub-item .sub-val.r { color: var(--red); }
 
-        /* MONTH SELECTOR */
         .month-selector {
             display: flex;
             align-items: center;
@@ -129,7 +125,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
         }
         .month-selector button:active { background: var(--surface3); }
         .month-selector span {
@@ -137,10 +132,8 @@
             font-weight: 700;
             min-width: 170px;
             text-align: center;
-            color: var(--text);
         }
 
-        /* CATEGORY BLOCKS */
         .cat-block {
             margin: 0 20px 14px;
             border-radius: 18px;
@@ -155,7 +148,6 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: background 0.2s;
         }
         .cat-header:active { background: var(--surface2); }
         .cat-header .left { display: flex; align-items: center; gap: 14px; }
@@ -171,29 +163,19 @@
         .cat-header .icon-circle.green { background: var(--green-dim); }
         .cat-header .icon-circle.orange { background: var(--orange-dim); }
         .cat-header .icon-circle.red { background: var(--red-dim); }
-        .cat-header .cat-title { font-size: 15px; font-weight: 700; color: var(--text); }
-        .cat-header .cat-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+        .cat-header .cat-title { font-size: 15px; font-weight: 700; }
+        .cat-header .cat-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .cat-header .right { display: flex; align-items: center; gap: 12px; }
         .cat-header .cat-total { font-size: 17px; font-weight: 800; }
         .cat-header .cat-total.green { color: var(--green); }
         .cat-header .cat-total.orange { color: var(--orange); }
         .cat-header .cat-total.red { color: var(--red); }
-        .cat-header .arrow {
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: transform 0.3s;
-        }
+        .cat-header .arrow { font-size: 14px; color: var(--text-muted); transition: transform 0.3s; }
         .cat-header .arrow.open { transform: rotate(90deg); }
 
-        /* DETAILS */
-        .cat-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease;
-        }
+        .cat-details { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
         .cat-details.open { max-height: 2000px; }
 
-        /* INCOME ROWS */
         .income-row {
             padding: 14px 20px;
             display: flex;
@@ -201,12 +183,7 @@
             gap: 12px;
             border-top: 1px solid var(--border);
         }
-        .income-row .row-title {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-        }
+        .income-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
         .income-row .row-amount-input {
             width: 110px;
             padding: 10px 12px;
@@ -218,13 +195,11 @@
             outline: none;
             color: var(--green);
             background: var(--green-dim);
-            transition: border-color 0.2s;
         }
         .income-row .row-amount-input:focus { border-color: var(--green); }
         .income-row .row-amount-input::placeholder { color: var(--text-muted); }
         .income-row .currency { font-size: 14px; font-weight: 600; color: var(--text-muted); }
 
-        /* FIXED / VARIABLE ROWS */
         .detail-row {
             padding: 14px 20px;
             display: flex;
@@ -233,7 +208,7 @@
             border-top: 1px solid var(--border);
         }
         .detail-row .info { flex: 1; }
-        .detail-row .info .title { font-size: 14px; font-weight: 600; color: var(--text); }
+        .detail-row .info .title { font-size: 14px; font-weight: 600; }
         .detail-row .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
         .detail-row .amount.orange { color: var(--orange); }
         .detail-row .amount.red { color: var(--red); }
@@ -245,14 +220,10 @@
             opacity: 0.3;
             padding: 6px;
             color: var(--text-dim);
-            transition: opacity 0.2s;
         }
         .detail-row .delete-btn:active { opacity: 0.7; }
 
-        .add-row {
-            padding: 14px 20px;
-            border-top: 1px solid var(--border);
-        }
+        .add-row { padding: 14px 20px; border-top: 1px solid var(--border); }
         .add-row button {
             background: var(--surface2);
             border: 1px dashed var(--border);
@@ -263,9 +234,8 @@
             color: var(--text-dim);
             cursor: pointer;
             width: 100%;
-            transition: all 0.2s;
         }
-        .add-row button:active { background: var(--surface3); border-color: var(--text-muted); }
+        .add-row button:active { background: var(--surface3); }
 
         .detail-empty {
             padding: 24px 20px;
@@ -275,7 +245,6 @@
             border-top: 1px solid var(--border);
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -302,14 +271,8 @@
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
-        .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; text-align: center; color: var(--text); }
-        .modal .handle {
-            width: 40px;
-            height: 4px;
-            background: var(--surface3);
-            border-radius: 2px;
-            margin: 0 auto 20px;
-        }
+        .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; text-align: center; }
+        .modal .handle { width: 40px; height: 4px; background: var(--surface3); border-radius: 2px; margin: 0 auto 20px; }
 
         .form-group { margin-bottom: 18px; }
         .form-group label {
@@ -330,7 +293,6 @@
             outline: none;
             background: var(--surface2);
             color: var(--text);
-            transition: border-color 0.2s;
         }
         .form-group input::placeholder { color: var(--text-muted); }
         .form-group input:focus { border-color: var(--accent); }
@@ -345,13 +307,11 @@
             cursor: pointer;
             margin-top: 8px;
             color: #0F0F14;
-            transition: opacity 0.2s;
         }
         .btn-submit:active { opacity: 0.85; }
         .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FFD060); }
         .btn-submit.red { background: linear-gradient(135deg, var(--red), #FF8A9A); }
 
-        /* SETTINGS */
         .settings-list { list-style: none; }
         .settings-list li {
             padding: 18px 0;
@@ -364,12 +324,11 @@
         .settings-list li:last-child { border-bottom: none; }
         .settings-list li .s-emoji { font-size: 22px; }
         .settings-list li .s-info { flex: 1; }
-        .settings-list li .s-title { font-size: 15px; font-weight: 600; color: var(--text); }
+        .settings-list li .s-title { font-size: 15px; font-weight: 600; }
         .settings-list li .s-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
         .settings-list li .s-arrow { color: var(--text-muted); font-size: 16px; }
         .settings-list li:active { opacity: 0.7; }
 
-        /* TOAST */
         .toast {
             display: none;
             position: fixed;
@@ -394,9 +353,13 @@
         }
 
         #importInput { display: none; }
+        #iconCanvas { display: none; }
     </style>
 </head>
 <body>
+
+    <!-- Canvas caché pour générer l'icône -->
+    <canvas id="iconCanvas" width="512" height="512"></canvas>
 
     <div class="header">
         <div>
@@ -433,7 +396,6 @@
         <button onclick="changeMonth(1)">▶</button>
     </div>
 
-    <!-- REVENUS -->
     <div class="cat-block">
         <div class="cat-header" onclick="toggleBlock('income')">
             <div class="left">
@@ -451,7 +413,6 @@
         <div class="cat-details" id="details-income"></div>
     </div>
 
-    <!-- FIXES -->
     <div class="cat-block">
         <div class="cat-header" onclick="toggleBlock('fixed')">
             <div class="left">
@@ -469,7 +430,6 @@
         <div class="cat-details" id="details-fixed"></div>
     </div>
 
-    <!-- VARIABLES -->
     <div class="cat-block">
         <div class="cat-header" onclick="toggleBlock('variable')">
             <div class="left">
@@ -487,7 +447,6 @@
         <div class="cat-details" id="details-variable"></div>
     </div>
 
-    <!-- ADD FIXED MODAL -->
     <div class="modal-overlay" id="addFixedModal" onclick="closeModal('addFixedModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -504,7 +463,6 @@
         </div>
     </div>
 
-    <!-- ADD VARIABLE MODAL -->
     <div class="modal-overlay" id="addVarModal" onclick="closeModal('addVarModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -521,7 +479,6 @@
         </div>
     </div>
 
-    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal" onclick="closeModal('settingsModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="handle"></div>
@@ -555,6 +512,63 @@
     <div class="toast" id="toast"></div>
 
     <script>
+        // === GÉNÉRATION AUTOMATIQUE DE L'ICÔNE 💰 ===
+        (function generateIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const ctx = canvas.getContext('2d');
+            const s = 512;
+
+            // Fond dark arrondi
+            const bg = ctx.createLinearGradient(0, 0, s, s);
+            bg.addColorStop(0, '#151520');
+            bg.addColorStop(1, '#1E1E2E');
+            const r = 112;
+            ctx.beginPath();
+            ctx.moveTo(r, 0); ctx.lineTo(s-r, 0); ctx.quadraticCurveTo(s, 0, s, r);
+            ctx.lineTo(s, s-r); ctx.quadraticCurveTo(s, s, s-r, s);
+            ctx.lineTo(r, s); ctx.quadraticCurveTo(0, s, 0, s-r);
+            ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
+            ctx.closePath();
+            ctx.fillStyle = bg;
+            ctx.fill();
+
+            // Glow
+            const glow = ctx.createRadialGradient(256, 220, 40, 256, 220, 180);
+            glow.addColorStop(0, 'rgba(123,111,255,0.15)');
+            glow.addColorStop(0.5, 'rgba(0,214,143,0.08)');
+            glow.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, s, s);
+
+            // Cercle subtil
+            ctx.beginPath();
+            ctx.arc(256, 230, 120, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(123,111,255,0.15)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Emoji 💰
+            ctx.font = '200px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('💰', 256, 230);
+
+            // Texte BUDGET
+            ctx.font = '700 48px -apple-system, BlinkMacSystemFont, sans-serif';
+            const tg = ctx.createLinearGradient(130, 400, 380, 400);
+            tg.addColorStop(0, '#7B6FFF');
+            tg.addColorStop(1, '#00D68F');
+            ctx.fillStyle = tg;
+            ctx.fillText('BUDGET', 256, 410);
+
+            // Injecter comme apple-touch-icon
+            const link = document.createElement('link');
+            link.rel = 'apple-touch-icon';
+            link.href = canvas.toDataURL('image/png');
+            document.head.appendChild(link);
+        })();
+
+        // === APP ===
         const INCOME_TITLES = ['Salaire Brice', 'Salaire Melissa', 'CAF', 'Autre'];
 
         let incomeData = JSON.parse(localStorage.getItem('budget_income') || '{}');
@@ -598,7 +612,6 @@
             const mk = getMonthKey();
             const monthIncome = incomeData[mk] || {};
 
-            // INCOME
             const totalIncome = INCOME_TITLES.reduce((s, t) => s + (monthIncome[t] || 0), 0);
             document.getElementById('total-income').textContent = '+' + fmt(totalIncome);
             document.getElementById('count-income').textContent = INCOME_TITLES.length + ' postes';
@@ -618,7 +631,6 @@
             });
             document.getElementById('details-income').innerHTML = incHtml;
 
-            // FIXED
             const totalFixed = fixedExpenses.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-fixed').textContent = '-' + fmt(totalFixed);
             document.getElementById('count-fixed').textContent = fixedExpenses.length + ' entrée(s)';
@@ -639,7 +651,6 @@
             fixHtml += `<div class="add-row"><button onclick="openModal('addFixedModal')">+ Ajouter une dépense fixe</button></div>`;
             document.getElementById('details-fixed').innerHTML = fixHtml;
 
-            // VARIABLE
             const monthVars = variableExpenses.filter(e => e.month === mk);
             const totalVar = monthVars.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-variable').textContent = '-' + fmt(totalVar);
@@ -661,7 +672,6 @@
             varHtml += `<div class="add-row"><button onclick="openModal('addVarModal')">+ Ajouter une dépense variable</button></div>`;
             document.getElementById('details-variable').innerHTML = varHtml;
 
-            // BALANCE
             const balance = totalIncome - totalFixed - totalVar;
             const balEl = document.getElementById('balanceValue');
             balEl.textContent = fmt(balance);
@@ -733,7 +743,6 @@
                 document.getElementById(id).classList.remove('active');
         }
 
-        // EXPORT JSON
         function exportJSON() {
             const data = { incomeData, fixedExpenses, variableExpenses };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -742,7 +751,6 @@
             closeModal('settingsModal');
         }
 
-        // EXPORT CSV
         function exportCSV() {
             const header = 'Type;Mois;Titre;Montant (€)';
             const rows = [];
@@ -780,7 +788,6 @@
             return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // IMPORT
         function triggerImport() {
             closeModal('settingsModal');
             document.getElementById('importInput').click();
