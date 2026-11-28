@@ -37,7 +37,7 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding-bottom: 40px;
+            padding-bottom: 100px;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -48,56 +48,31 @@
             align-items: flex-start;
         }
         .header h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
             background: linear-gradient(135deg, #7B6FFF, #00D68F);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .header p { color: var(--text-dim); font-size: 13px; margin-top: 4px; font-weight: 500; }
         .header-btn {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            border-radius: 12px;
-            padding: 10px 12px;
-            font-size: 16px;
-            cursor: pointer;
+            background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text-dim); border-radius: 12px; padding: 10px 12px;
+            font-size: 16px; cursor: pointer;
         }
         .header-btn:active { background: var(--surface3); }
 
         .balance-section { padding: 0 20px 8px; }
         .balance-card {
             background: linear-gradient(135deg, #1E1E2E, #252538);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: var(--shadow);
-            text-align: center;
+            border: 1px solid var(--border); border-radius: 20px;
+            padding: 24px; box-shadow: var(--shadow); text-align: center;
         }
-        .balance-card .label {
-            font-size: 12px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-        .balance-card .value {
-            font-size: 36px;
-            font-weight: 800;
-            margin-top: 8px;
-            letter-spacing: -1px;
-        }
+        .balance-card .label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+        .balance-card .value { font-size: 36px; font-weight: 800; margin-top: 8px; letter-spacing: -1px; }
         .balance-card .value.pos { color: var(--green); }
         .balance-card .value.neg { color: var(--red); }
         .balance-card .sub-row {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
+            display: flex; justify-content: center; gap: 24px;
+            margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
         }
         .balance-card .sub-item { text-align: center; }
         .balance-card .sub-item .sub-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
@@ -107,58 +82,31 @@
         .balance-card .sub-item .sub-val.r { color: var(--red); }
 
         .month-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px 20px 16px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; padding: 20px 20px 16px;
         }
         .month-selector button {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            border-radius: 12px;
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text-dim); border-radius: 12px;
+            width: 40px; height: 40px; font-size: 16px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
         .month-selector button:active { background: var(--surface3); }
-        .month-selector span {
-            font-size: 16px;
-            font-weight: 700;
-            min-width: 170px;
-            text-align: center;
-        }
+        .month-selector span { font-size: 16px; font-weight: 700; min-width: 170px; text-align: center; }
 
         .cat-block {
-            margin: 0 20px 14px;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: var(--surface);
+            margin: 0 20px 14px; border-radius: 18px; overflow: hidden;
+            border: 1px solid var(--border); background: var(--surface);
         }
-
         .cat-header {
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
+            padding: 18px 20px; display: flex; align-items: center;
+            justify-content: space-between; cursor: pointer;
         }
         .cat-header:active { background: var(--surface2); }
         .cat-header .left { display: flex; align-items: center; gap: 14px; }
         .cat-header .icon-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            width: 44px; height: 44px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
         .cat-header .icon-circle.green { background: var(--green-dim); }
         .cat-header .icon-circle.orange { background: var(--orange-dim); }
@@ -177,99 +125,97 @@
         .cat-details.open { max-height: 2000px; }
 
         .income-row {
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-top: 1px solid var(--border);
+            padding: 14px 20px; display: flex; align-items: center;
+            gap: 12px; border-top: 1px solid var(--border);
         }
         .income-row .row-title { flex: 1; font-size: 14px; font-weight: 600; }
         .income-row .row-amount-input {
-            width: 110px;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            text-align: right;
-            outline: none;
-            color: var(--green);
-            background: var(--green-dim);
+            width: 110px; padding: 10px 12px; border: 1px solid var(--border);
+            border-radius: 10px; font-size: 15px; font-weight: 700;
+            text-align: right; outline: none; color: var(--green); background: var(--green-dim);
         }
         .income-row .row-amount-input:focus { border-color: var(--green); }
         .income-row .row-amount-input::placeholder { color: var(--text-muted); }
         .income-row .currency { font-size: 14px; font-weight: 600; color: var(--text-muted); }
 
         .detail-row {
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-top: 1px solid var(--border);
+            padding: 14px 20px; display: flex; align-items: center;
+            gap: 12px; border-top: 1px solid var(--border);
         }
-        .detail-row .info {
-            flex: 1;
-            cursor: pointer;
-        }
+        .detail-row .info { flex: 1; cursor: pointer; }
         .detail-row .info .title { font-size: 14px; font-weight: 600; }
         .detail-row .info .tap-hint { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
         .detail-row .amount { font-size: 15px; font-weight: 700; white-space: nowrap; }
         .detail-row .amount.orange { color: var(--orange); }
         .detail-row .amount.red { color: var(--red); }
         .detail-row .delete-btn {
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            opacity: 0.3;
-            padding: 6px;
-            color: var(--text-dim);
+            background: none; border: none; font-size: 14px;
+            cursor: pointer; opacity: 0.3; padding: 6px; color: var(--text-dim);
         }
         .detail-row .delete-btn:active { opacity: 0.7; }
 
         .add-row { padding: 14px 20px; border-top: 1px solid var(--border); }
         .add-row button {
-            background: var(--surface2);
-            border: 1px dashed var(--border);
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dim);
-            cursor: pointer;
-            width: 100%;
+            background: var(--surface2); border: 1px dashed var(--border);
+            border-radius: 12px; padding: 12px 20px; font-size: 13px;
+            font-weight: 600; color: var(--text-dim); cursor: pointer; width: 100%;
         }
         .add-row button:active { background: var(--surface3); }
 
         .detail-empty {
-            padding: 24px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 13px;
-            border-top: 1px solid var(--border);
+            padding: 24px 20px; text-align: center;
+            color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border);
         }
 
+        .fab {
+            position: fixed; bottom: 32px; right: 24px;
+            width: 60px; height: 60px; border-radius: 20px;
+            background: linear-gradient(135deg, var(--red), #FF8A9A);
+            border: none; color: white; font-size: 28px; font-weight: 300;
+            cursor: pointer; box-shadow: 0 6px 24px rgba(255,92,114,0.4);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 100; transition: transform 0.2s;
+        }
+        .fab:active { transform: scale(0.92); }
+        .fab-label {
+            position: fixed; bottom: 44px; right: 92px;
+            background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text-dim); padding: 8px 14px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; z-index: 100;
+            pointer-events: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .fab-label.show { opacity: 1; }
+
+        .suggestions-container { position: relative; }
+        .suggestions-list {
+            display: none; position: absolute; top: 100%; left: 0; right: 0;
+            background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 0 0 12px 12px; max-height: 180px;
+            overflow-y: auto; z-index: 10; margin-top: -1px;
+        }
+        .suggestions-list.active { display: block; }
+        .suggestion-item {
+            padding: 12px 16px; font-size: 14px; font-weight: 500;
+            color: var(--text); cursor: pointer; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:active { background: var(--surface3); }
+        .suggestion-item .s-icon { font-size: 16px; opacity: 0.5; }
+        .suggestion-item .s-text { flex: 1; }
+
         .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 200;
-            align-items: flex-end;
-            justify-content: center;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); z-index: 200;
+            align-items: flex-end; justify-content: center;
             backdrop-filter: blur(4px);
         }
         .modal-overlay.active { display: flex; }
         .modal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 24px 24px 0 0;
-            padding: 24px 24px 44px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 24px 24px 0 0; padding: 24px 24px 44px;
+            width: 100%; max-width: 500px; max-height: 85vh;
+            overflow-y: auto; animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
             from { transform: translateY(100%); }
@@ -280,37 +226,22 @@
 
         .form-group { margin-bottom: 18px; }
         .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dim);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: block; font-size: 12px; font-weight: 600;
+            color: var(--text-dim); margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
         .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            background: var(--surface2);
-            color: var(--text);
+            width: 100%; padding: 14px 16px; border: 1px solid var(--border);
+            border-radius: 12px; font-size: 16px; outline: none;
+            background: var(--surface2); color: var(--text);
         }
         .form-group input::placeholder { color: var(--text-muted); }
         .form-group input:focus { border-color: var(--accent); }
 
         .btn-submit {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 8px;
-            color: #0F0F14;
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            margin-top: 8px; color: #0F0F14;
         }
         .btn-submit:active { opacity: 0.85; }
         .btn-submit.orange { background: linear-gradient(135deg, var(--orange), #FFD060); }
@@ -319,12 +250,8 @@
 
         .settings-list { list-style: none; }
         .settings-list li {
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
+            padding: 18px 0; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 14px; cursor: pointer;
         }
         .settings-list li:last-child { border-bottom: none; }
         .settings-list li .s-emoji { font-size: 22px; }
@@ -335,20 +262,11 @@
         .settings-list li:active { opacity: 0.7; }
 
         .toast {
-            display: none;
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 14px 28px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 999;
-            animation: fadeInUp 0.3s ease;
+            display: none; position: fixed; bottom: 104px; left: 50%;
+            transform: translateX(-50%); background: var(--surface2);
+            border: 1px solid var(--border); color: var(--text);
+            padding: 14px 28px; border-radius: 14px; font-size: 14px;
+            font-weight: 600; z-index: 999; animation: fadeInUp 0.3s ease;
             box-shadow: var(--shadow);
         }
         .toast.show { display: block; }
@@ -378,18 +296,9 @@
             <div class="label">Solde restant</div>
             <div class="value" id="balanceValue">0,00 €</div>
             <div class="sub-row">
-                <div class="sub-item">
-                    <div class="sub-label">Revenus</div>
-                    <div class="sub-val g" id="subIncome">+0 €</div>
-                </div>
-                <div class="sub-item">
-                    <div class="sub-label">Fixes</div>
-                    <div class="sub-val o" id="subFixed">-0 €</div>
-                </div>
-                <div class="sub-item">
-                    <div class="sub-label">Variables</div>
-                    <div class="sub-val r" id="subVariable">-0 €</div>
-                </div>
+                <div class="sub-item"><div class="sub-label">Revenus</div><div class="sub-val g" id="subIncome">+0 €</div></div>
+                <div class="sub-item"><div class="sub-label">Fixes</div><div class="sub-val o" id="subFixed">-0 €</div></div>
+                <div class="sub-item"><div class="sub-label">Variables</div><div class="sub-val r" id="subVariable">-0 €</div></div>
             </div>
         </div>
     </div>
@@ -404,10 +313,7 @@
         <div class="cat-header" onclick="toggleBlock('income')">
             <div class="left">
                 <div class="icon-circle green">💚</div>
-                <div>
-                    <div class="cat-title">Revenus</div>
-                    <div class="cat-count" id="count-income">4 postes</div>
-                </div>
+                <div><div class="cat-title">Revenus</div><div class="cat-count" id="count-income">4 postes</div></div>
             </div>
             <div class="right">
                 <span class="cat-total green" id="total-income">+0 €</span>
@@ -421,10 +327,7 @@
         <div class="cat-header" onclick="toggleBlock('fixed')">
             <div class="left">
                 <div class="icon-circle orange">🔒</div>
-                <div>
-                    <div class="cat-title">Dépenses fixes</div>
-                    <div class="cat-count" id="count-fixed">0 entrée(s)</div>
-                </div>
+                <div><div class="cat-title">Dépenses fixes</div><div class="cat-count" id="count-fixed">0 entrée(s)</div></div>
             </div>
             <div class="right">
                 <span class="cat-total orange" id="total-fixed">-0 €</span>
@@ -438,10 +341,7 @@
         <div class="cat-header" onclick="toggleBlock('variable')">
             <div class="left">
                 <div class="icon-circle red">🛒</div>
-                <div>
-                    <div class="cat-title">Dépenses variables</div>
-                    <div class="cat-count" id="count-variable">0 entrée(s)</div>
-                </div>
+                <div><div class="cat-title">Dépenses variables</div><div class="cat-count" id="count-variable">0 entrée(s)</div></div>
             </div>
             <div class="right">
                 <span class="cat-total red" id="total-variable">-0 €</span>
@@ -451,6 +351,9 @@
         <div class="cat-details" id="details-variable"></div>
     </div>
 
+    <div class="fab-label" id="fabLabel">Ajouter une dépense</div>
+    <button class="fab" onclick="openModal('addVarModal')">+</button>
+
     <!-- ADD FIXED MODAL -->
     <div class="modal-overlay" id="addFixedModal" onclick="closeModal('addFixedModal', event)">
         <div class="modal" onclick="event.stopPropagation()">
@@ -458,7 +361,10 @@
             <h2>🔒 Nouvelle dépense fixe</h2>
             <div class="form-group">
                 <label>Titre</label>
-                <input type="text" id="fixedTitle" placeholder="Ex: Loyer, Assurance, Netflix…">
+                <div class="suggestions-container">
+                    <input type="text" id="fixedTitle" placeholder="Ex: Loyer, Assurance, Netflix…" autocomplete="off" oninput="showSuggestions(this, 'fixedSuggestions', 'fixed')">
+                    <div class="suggestions-list" id="fixedSuggestions"></div>
+                </div>
             </div>
             <div class="form-group">
                 <label>Montant mensuel (€)</label>
@@ -493,7 +399,10 @@
             <h2>🛒 Nouvelle dépense variable</h2>
             <div class="form-group">
                 <label>Titre</label>
-                <input type="text" id="varTitle" placeholder="Ex: Courses, Restaurant, Shopping…">
+                <div class="suggestions-container">
+                    <input type="text" id="varTitle" placeholder="Ex: Courses, Restaurant, Shopping…" autocomplete="off" oninput="showSuggestions(this, 'varSuggestions', 'variable')">
+                    <div class="suggestions-list" id="varSuggestions"></div>
+                </div>
             </div>
             <div class="form-group">
                 <label>Montant (€)</label>
@@ -577,7 +486,13 @@
         let variableExpenses = JSON.parse(localStorage.getItem('budget_variable') || '[]');
         let currentDate = new Date();
 
-        function init() { updateMonthDisplay(); render(); }
+        function init() {
+            updateMonthDisplay(); render();
+            setTimeout(() => {
+                document.getElementById('fabLabel').classList.add('show');
+                setTimeout(() => document.getElementById('fabLabel').classList.remove('show'), 3000);
+            }, 1000);
+        }
 
         function save() {
             localStorage.setItem('budget_income', JSON.stringify(incomeData));
@@ -598,8 +513,7 @@
 
         function changeMonth(delta) {
             currentDate.setMonth(currentDate.getMonth() + delta);
-            updateMonthDisplay();
-            render();
+            updateMonthDisplay(); render();
         }
 
         function updateMonthDisplay() {
@@ -609,11 +523,77 @@
 
         function fmt(n) { return n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }); }
 
+        // === SUGGESTIONS (titre uniquement) ===
+        function getUniqueTitles(type) {
+            const titles = new Set();
+            if (type === 'variable') {
+                variableExpenses.forEach(e => titles.add(e.title));
+            } else if (type === 'fixed') {
+                fixedExpenses.forEach(e => titles.add(e.title));
+            }
+            return [...titles];
+        }
+
+        function showSuggestions(input, listId, type) {
+            const list = document.getElementById(listId);
+            const query = input.value.trim().toLowerCase();
+
+            if (query.length === 0) {
+                list.classList.remove('active');
+                return;
+            }
+
+            const allTitles = getUniqueTitles(type);
+            const matches = allTitles.filter(t =>
+                t.toLowerCase().includes(query) && t.toLowerCase() !== query
+            );
+
+            if (matches.length === 0) {
+                list.classList.remove('active');
+                return;
+            }
+
+            matches.sort((a, b) => {
+                const aStarts = a.toLowerCase().startsWith(query) ? 0 : 1;
+                const bStarts = b.toLowerCase().startsWith(query) ? 0 : 1;
+                return aStarts - bStarts || a.localeCompare(b);
+            });
+
+            let html = '';
+            matches.slice(0, 5).forEach(title => {
+                html += `
+                    <div class="suggestion-item" onclick="selectSuggestion('${input.id}', '${listId}', '${title.replace(/'/g, "\\'")}')">
+                        <span class="s-icon">🕐</span>
+                        <span class="s-text">${highlightMatch(title, query)}</span>
+                    </div>`;
+            });
+
+            list.innerHTML = html;
+            list.classList.add('active');
+        }
+
+        function highlightMatch(text, query) {
+            const idx = text.toLowerCase().indexOf(query);
+            if (idx === -1) return text;
+            return text.slice(0, idx) + '<strong>' + text.slice(idx, idx + query.length) + '</strong>' + text.slice(idx + query.length);
+        }
+
+        function selectSuggestion(inputId, listId, title) {
+            document.getElementById(inputId).value = title;
+            document.getElementById(listId).classList.remove('active');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.suggestions-container')) {
+                document.querySelectorAll('.suggestions-list').forEach(l => l.classList.remove('active'));
+            }
+        });
+
+        // === RENDER ===
         function render() {
             const mk = getMonthKey();
             const monthIncome = incomeData[mk] || {};
 
-            // INCOME — trié du plus grand au plus petit
             const sortedIncomeTitles = [...INCOME_TITLES].sort((a, b) => (monthIncome[b] || 0) - (monthIncome[a] || 0));
             const totalIncome = INCOME_TITLES.reduce((s, t) => s + (monthIncome[t] || 0), 0);
             document.getElementById('total-income').textContent = '+' + fmt(totalIncome);
@@ -634,7 +614,6 @@
             });
             document.getElementById('details-income').innerHTML = incHtml;
 
-            // FIXED — trié du plus grand au plus petit
             const sortedFixed = [...fixedExpenses].sort((a, b) => b.amount - a.amount);
             const totalFixed = fixedExpenses.reduce((s, e) => s + e.amount, 0);
             document.getElementById('total-fixed').textContent = '-' + fmt(totalFixed);
@@ -659,7 +638,6 @@
             fixHtml += `<div class="add-row"><button onclick="openModal('addFixedModal')">+ Ajouter une dépense fixe</button></div>`;
             document.getElementById('details-fixed').innerHTML = fixHtml;
 
-            // VARIABLE — trié du plus grand au plus petit
             const monthVars = variableExpenses.filter(e => e.month === mk);
             const sortedVars = [...monthVars].sort((a, b) => b.amount - a.amount);
             const totalVar = monthVars.reduce((s, e) => s + e.amount, 0);
@@ -682,7 +660,6 @@
             varHtml += `<div class="add-row"><button onclick="openModal('addVarModal')">+ Ajouter une dépense variable</button></div>`;
             document.getElementById('details-variable').innerHTML = varHtml;
 
-            // BALANCE
             const balance = totalIncome - totalFixed - totalVar;
             const balEl = document.getElementById('balanceValue');
             balEl.textContent = fmt(balance);
@@ -701,7 +678,6 @@
             showToast('💚 ' + title + ' mis à jour');
         }
 
-        // === DÉPENSES FIXES ===
         function addFixed() {
             const title = document.getElementById('fixedTitle').value.trim();
             const amount = parseFloat(document.getElementById('fixedAmount').value);
@@ -747,7 +723,6 @@
             }
         }
 
-        // === DÉPENSES VARIABLES ===
         function addVariable() {
             const title = document.getElementById('varTitle').value.trim();
             const amount = parseFloat(document.getElementById('varAmount').value);
@@ -776,11 +751,12 @@
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id, e) {
-            if (!e || e.target === document.getElementById(id))
+            if (!e || e.target === document.getElementById(id)) {
                 document.getElementById(id).classList.remove('active');
+                document.querySelectorAll('.suggestions-list').forEach(l => l.classList.remove('active'));
+            }
         }
 
-        // === EXPORT / IMPORT ===
         function exportJSON() {
             const data = { incomeData, fixedExpenses, variableExpenses };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
